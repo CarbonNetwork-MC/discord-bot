@@ -41,6 +41,13 @@ module.exports = {
             changes.push(`**NSFW:** \`${oldChannel.nsfw}\` → \`${newChannel.nsfw}\``);
         }
 
+        // Changed category (parent)
+        if (oldChannel.parentId !== newChannel.parentId) {
+            const oldParent = oldChannel.parent?.name || 'None';
+            const newParent = newChannel.parent?.name || 'None';
+            changes.push(`**Category:** \`${oldParent}\` → \`${newParent}\``);
+        }
+
         // Permission changes
         const permChanges = compareOverwrites(
             oldChannel.permissionOverwrites.cache,
