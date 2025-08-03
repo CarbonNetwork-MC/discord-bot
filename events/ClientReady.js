@@ -17,7 +17,6 @@ module.exports = {
 
         // Set the status
         setInterval(() => {
-            consoleLog('system', `Setting status: ${statuses[index].name} (${statuses[index].type})`);
             client.user.setPresence({
                 activities: [statuses[index]],
                 status: 'dnd',

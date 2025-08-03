@@ -47,9 +47,10 @@ module.exports = {
         ),
     async execute(interaction) {
         const subcommand = interaction.options.getSubcommand();
+        const pool = db.getDbPool();
 
         if (subcommand === 'list') {
-            const [notes] = await db.query('SELECT * FROM notes WHERE user_id = ?', [interaction.user.id]);
+            const [notes] = await pool.query('SELECT * FROM notes WHERE user_id = ?', [interaction.user.id]);
             if (notes.length === 0) {
                 return interaction.reply('You have no notes.');
             }
@@ -80,7 +81,7 @@ module.exports = {
             row = new ActionRowBuilder().addComponents(
                 new ButtonBuilder().setCustomId('prev').setLabel('<').setStyle(ButtonStyle.Secondary),
                 new ButtonBuilder().setCustomId('next').setLabel('>').setStyle(ButtonStyle.Secondary),
-                new ButtonBuilder().setCustomId('close').setLabel('Close').setStyle(ButtonStyle.Danger)
+                new ButtonBuilder().setCustomId('close').setLabel('X').setStyle(ButtonStyle.Danger)
             );
 
             // Send message
@@ -118,7 +119,7 @@ module.exports = {
 
         if (subcommand === 'view') {
             const noteId = interaction.options.getString('id');
-            const [note] = await db.query('SELECT * FROM notes WHERE user_id = ? AND id = ?', [interaction.user.id, noteId]);
+            const [note] = await pool.query('SELECT * FROM notes WHERE user_id = ? AND id = ?', [interaction.user.id, noteId]);
             if (note.length === 0) {
                 return interaction.reply(`No note found with ID ${noteId}.`);
             }
@@ -131,7 +132,7 @@ module.exports = {
                 .setTimestamp();
 
             row = new ActionRowBuilder().addComponents(
-                new ButtonBuilder().setCustomId('close').setLabel('Close').setStyle(ButtonStyle.Danger)
+                new ButtonBuilder().setCustomId('close').setLabel('X').setStyle(ButtonStyle.Danger)
             );
 
             const message = await interaction.reply({ embeds: [noteEmbed], components: [row], fetchReply: true });
@@ -155,13 +156,13 @@ module.exports = {
             const title = interaction.options.getString('title');
             const content = interaction.options.getString('content');
 
-            await db.query('INSERT INTO notes (user_id, title, content) VALUES (?, ?, ?)', [interaction.user.id, title, content]);
+            await pool.query('INSERT INTO notes (user_id, title, content) VALUES (?, ?, ?)', [interaction.user.id, title, content]);
             await interaction.reply(`Note added: **${title}**`);
         }
 
         if (subcommand === 'remove') {
             const noteId = interaction.options.getString('id');
-            const result = await db.query('DELETE FROM notes WHERE user_id = ? AND id = ?', [interaction.user.id, noteId]);
+            const result = await pool.query('DELETE FROM notes WHERE user_id = ? AND id = ?', [interaction.user.id, noteId]);
             if (result.affectedRows > 0) {
                 await interaction.reply(`Note with ID ${noteId} removed.`);
             } else {

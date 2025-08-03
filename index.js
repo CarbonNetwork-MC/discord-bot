@@ -1,8 +1,12 @@
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
 require('dotenv').config();
-
+const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');
+
+const deployCommands = require('./src/deploy-commands');
+const { consoleLog } = require('./src/logger.js');
+const { loadGuildSettings } = require('./src/guild-settings');
+const database = require('./src/database.js');
 
 const client = new Client({ 
     intents: [
@@ -10,8 +14,6 @@ const client = new Client({
         GatewayIntentBits.GuildVoiceStates,
     ],
 });
-const deployCommands = require('./src/deploy-commands');
-const { consoleLog } = require('./src/logger.js');
 
 client.commands = new Collection();
 
@@ -48,8 +50,27 @@ for (const file of eventFiles) {
 	}
 }
 
-// Deploy commands and log in the bot
+/*
+ * Initialize the database pool
+ * Load the guild settings
+ * Deploy Commands
+ * Login the client
+*/
 (async () => {
+    // Initialize DB pool first
+    const pool = await database.initDbPool(5, 2000); // 5 retries, 2s delay
+
+    if (pool) {
+        try {
+            await loadGuildSettings();
+        } catch (err) {
+            consoleLog('error', `Failed to load guild settings: ${err.message}`);
+        }
+    } else {
+        consoleLog('error', 'Guild settings not loaded because database pool could not be initialized.');
+    }
+
+    // Deploy commands and login after DB + settings
     await deployCommands(client);
     client.login(process.env.TOKEN);
 })();

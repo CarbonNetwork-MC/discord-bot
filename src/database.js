@@ -1,38 +1,40 @@
 const mysql = require('mysql2/promise');
 const { consoleLog } = require('./logger.js');
 
-const pool = mysql.createPool({
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT || 3306,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    ssl: {
-        rejectUnauthorized: false
-    },
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
-});
+let pool;
 
-async function testConnectionWithRetry(retries = 3, delay = 2000) {
+async function initDbPool(retries = 3, delay = 2000) {
+    pool = mysql.createPool({
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT || 3306,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0,
+        ssl: { rejectUnauthorized: false }
+    });
+
     for (let attempt = 1; attempt <= retries; attempt++) {
         try {
-            const connection = await pool.getConnection();
+            const conn = await pool.getConnection();
+            conn.release();
             consoleLog('system', `Database pool initialized successfully (attempt ${attempt}).`);
-            connection.release();
-            return;
+            return pool;
         } catch (err) {
-            consoleLog('error', `Database connection failed on attempt ${attempt}: ${err.code || 'UNKNOWN'} - ${err.message || err}`);
-            if (attempt < retries) {
-                await new Promise(res => setTimeout(res, delay));
-            } else {
-                consoleLog('error', `All ${retries} connection attempts failed. Continuing without DB.`);
-            }
+            consoleLog('error', `DB connection failed on attempt ${attempt}: ${err.code || 'UNKNOWN'} - ${err.message || err}`);
+            if (attempt < retries) await new Promise(res => setTimeout(res, delay));
         }
     }
+
+    consoleLog('error', `All ${retries} connection attempts failed. Continuing without DB.`);
+    return null;
 }
 
-testConnectionWithRetry();
+function getDbPool() {
+    if (!pool) throw new Error('DB pool not initialized. Call initDbPool() first.');
+    return pool;
+}
 
-module.exports = pool;
+module.exports = { initDbPool, getDbPool };
