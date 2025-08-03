@@ -2,4 +2,7 @@
 /.npm
 /.vscode
 .env
+
+# Ignore text files for development
 startup.txt
+events.txt
