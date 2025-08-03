@@ -5,7 +5,7 @@ const path = require('node:path');
 
 const { consoleLog } = require('./logger.js');
 
-const deployCommands = async (client) => {
+const deployCommands = async (client, isDev = false, clearCommands = false) => {
     const commands = [];
     const foldersPath = path.join(__dirname, '../commands');
     const commandFolders = fs.readdirSync(foldersPath);
@@ -32,11 +32,18 @@ const deployCommands = async (client) => {
     try {
         consoleLog('system', `Started refreshing ${commands.length} application (/) commands.`);
 
-        // Global Commands
-        // const data = await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: commands });
+        const route = isDev
+            ? Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.DEV_GUILD_ID)
+            : Routes.applicationCommands(process.env.CLIENT_ID);
 
-        // Development Server Commands
-        const data = await rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.DEV_GUILD_ID), { body: commands });
+        if (clearCommands) {
+            consoleLog('system', 'Clearing existing commands...');
+        } else {
+            consoleLog('system', isDev ? 'Deploying commands to development server...' : 'Deploying commands to production...');
+        }
+
+        const body = clearCommands ? [] : commands;
+        const data = await rest.put(route, { body });
 
         consoleLog('system', `Successfully reloaded ${data.length} application (/) commands.`);
     } catch (error) {
