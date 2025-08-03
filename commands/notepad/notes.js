@@ -72,7 +72,7 @@ module.exports = {
                 return new EmbedBuilder()
                     .setTitle('📄 Your notes')
                     .setDescription(pageDescription)
-                    .setColor(process.env.EMBED_COLOR_BLUE)
+                    .setColor(process.env.COLOR_BLUE)
                     .setFooter({ text: `${process.env.EMBED_FOOTER} • Page ${page + 1}/${totalPages}` })
                     .setTimestamp();
             }
@@ -127,7 +127,7 @@ module.exports = {
             const noteEmbed = new EmbedBuilder()
                 .setTitle(`${note[0].title}`)
                 .setDescription(note[0].content)
-                .setColor(process.env.EMBED_COLOR_BLUE)
+                .setColor(process.env.COLOR_BLUE)
                 .setFooter({ text: process.env.EMBED_FOOTER })
                 .setTimestamp();
 

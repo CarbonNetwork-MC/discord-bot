@@ -24,7 +24,7 @@ module.exports = {
                     inline: false
                 }
             )
-            .setColor(process.env.EMBED_COLOR_BLUE)
+            .setColor(process.env.COLOR_BLUE)
             .setFooter({ text: process.env.EMBED_FOOTER })
             .setTimestamp();
 
