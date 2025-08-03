@@ -1,40 +1,46 @@
-const { getPerms } = require('./formatPermissions');
+const { PermissionsBitField } = require('discord.js');
+const { formatPermissions } = require('./formatPermissions');
 
 function compareOverwrites(oldPerms, newPerms, guild) {
     const changes = [];
 
-    // Added or modified overwrites
     newPerms.forEach((newOverwrite, id) => {
         const oldOverwrite = oldPerms.get(id);
         const name = id === guild.id ? '@everyone' : `<@&${id}>`;
 
-        if (!oldOverwrite) {
-            const added = getPerms(newOverwrite.allow);
-            const denied = getPerms(newOverwrite.deny);
-            changes.push(`**${name}**\n> ✅ Allowed: ${added || 'None'}\n> ❌ Denied: ${denied || 'None'}`);
-        } else {
-            const added = getPerms(newOverwrite.allow).split(', ').filter(p => !oldOverwrite.allow.has(p));
-            const removed = getPerms(oldOverwrite.allow).split(', ').filter(p => !newOverwrite.allow.has(p));
+        const diffs = [];
 
-            const deniedAdded = getPerms(newOverwrite.deny).split(', ').filter(p => !oldOverwrite.deny.has(p));
-            const deniedRemoved = getPerms(oldOverwrite.deny).split(', ').filter(p => !newOverwrite.deny.has(p));
+        const allPerms = new Set([
+            ...new PermissionsBitField(newOverwrite.allow).toArray(),
+            ...new PermissionsBitField(newOverwrite.deny).toArray(),
+            ...(oldOverwrite ? new PermissionsBitField(oldOverwrite.allow).toArray() : []),
+            ...(oldOverwrite ? new PermissionsBitField(oldOverwrite.deny).toArray() : []),
+        ]);
 
-            if (added.length || removed.length || deniedAdded.length || deniedRemoved.length) {
-                let msg = `✏️ **${name}**\n`;
-                if (added.length) msg += `> ✅ Added: ${added.join(', ')}\n`;
-                if (removed.length) msg += `> ✅ Removed: ${removed.join(', ')}\n`;
-                if (deniedAdded.length) msg += `> ❌ Newly Denied: ${deniedAdded.join(', ')}\n`;
-                if (deniedRemoved.length) msg += `> ❌ Removed Deny: ${deniedRemoved.join(', ')}\n`;
-                changes.push(msg.trim());
+        allPerms.forEach(perm => {
+            const wasAllowed = oldOverwrite?.allow.has(perm);
+            const wasDenied = oldOverwrite?.deny.has(perm);
+            const nowAllowed = newOverwrite.allow.has(perm);
+            const nowDenied = newOverwrite.deny.has(perm);
+
+            const oldStatus = wasAllowed ? '✅' : wasDenied ? '❌' : '⚪';
+            const newStatus = nowAllowed ? '✅' : nowDenied ? '❌' : '⚪';
+
+            if (oldStatus !== newStatus) {
+                diffs.push(`${formatPermissions([perm])} ${oldStatus} → ${newStatus}`);
             }
+        });
+
+        if (diffs.length > 0) {
+            changes.push(`**${name}**\n> ${diffs.join('\n> ')}`);
         }
     });
 
-    // Removed overwrites
+    // Detect removed overwrites
     oldPerms.forEach((oldOverwrite, id) => {
         if (!newPerms.has(id)) {
             const name = id === guild.id ? '@everyone' : `<@&${id}>`;
-            changes.push(`➖ **${name}** overwrite removed`);
+            changes.push(`**${name}** overwrite removed`);
         }
     });
 

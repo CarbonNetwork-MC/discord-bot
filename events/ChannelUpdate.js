@@ -1,0 +1,67 @@
+const { Events, EmbedBuilder } = require('discord.js');
+const { consoleLog } = require('../src/logger.js');
+const { guildSettings } = require('../src/guild-settings.js');
+const { compareOverwrites } = require('../utils/compareOverwrites');
+
+module.exports = {
+    name: Events.ChannelUpdate,
+    once: false,
+    execute: async (oldChannel, newChannel) => {
+        const logChannel = newChannel.guild.channels.cache.find(
+            ch => ch.id === guildSettings[newChannel.guild.id]?.modLogId
+        );
+        if (!logChannel) {
+            consoleLog('warning', `No log channel found for guild: ${newChannel.guild.id}`);
+            return;
+        }
+
+        const changes = [];
+
+        // Header: Channel name and ID
+        changes.push(`**Channel:** <#${newChannel.id}>`);
+        changes.push(`**ID:** \`${newChannel.id}\`\n`);
+
+        // Changed name
+        if (oldChannel.name !== newChannel.name) {
+            changes.push(`**Name:** \`${oldChannel.name}\` → \`${newChannel.name}\``);
+        }
+
+        // Changed topic (text channels only)
+        if ('topic' in oldChannel && oldChannel.topic !== newChannel.topic) {
+            changes.push(`**Topic:** \`${oldChannel.topic || 'None'}\` → \`${newChannel.topic || 'None'}\``);
+        }
+
+        // Changed slowmode (rate limit per user)
+        if ('rateLimitPerUser' in oldChannel && oldChannel.rateLimitPerUser !== newChannel.rateLimitPerUser) {
+            changes.push(`**Slowmode:** \`${oldChannel.rateLimitPerUser}s\` → \`${newChannel.rateLimitPerUser}s\``);
+        }
+
+        // Changed NSFW
+        if ('nsfw' in oldChannel && oldChannel.nsfw !== newChannel.nsfw) {
+            changes.push(`**NSFW:** \`${oldChannel.nsfw}\` → \`${newChannel.nsfw}\``);
+        }
+
+        // Permission changes
+        const permChanges = compareOverwrites(
+            oldChannel.permissionOverwrites.cache,
+            newChannel.permissionOverwrites.cache,
+            newChannel.guild
+        );
+
+        if (permChanges) {
+            changes.push(`**Permission Changes:**\n${permChanges}`);
+        }
+
+        // No actual changes detected
+        if (changes.length <= 2) return; // Only header present
+
+        const embed = new EmbedBuilder()
+            .setTitle(':pencil: Channel updated')
+            .setDescription(changes.join('\n'))
+            .setColor(process.env.COLOR_BLUE || 'Yellow')
+            .setFooter({ text: process.env.EMBED_FOOTER || '' })
+            .setTimestamp();
+
+        logChannel.send({ embeds: [embed] });
+    }
+};
