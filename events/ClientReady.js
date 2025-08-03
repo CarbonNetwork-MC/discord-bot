@@ -26,6 +26,6 @@ module.exports = {
         }, 1000 * interval);
 
         consoleLog('system', 'Status has been set!');
-        consoleLog('system', `Ready! Logged in as ${client.user.tag}`);
+        consoleLog('system', `\x1b[32mReady! \x1b[1;36mLogged in as ${client.user.tag}\x1b[0m`);
     }
 }
