@@ -61,7 +61,7 @@ for (const file of eventFiles) {
 */
 (async () => {
     // Initialize DB pool first
-    const pool = await database.initDbPool(5, 2000); // 5 retries, 2s delay
+    const pool = await database.initDbPool(5, 1000);
 
     if (pool) {
         try {
