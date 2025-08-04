@@ -50,7 +50,7 @@ module.exports = {
         const pool = db.getDbPool();
 
         if (subcommand === 'list') {
-            const [notes] = await pool.query('SELECT * FROM notes WHERE user_id = ?', [interaction.user.id]);
+            const [notes] = await pool.query('SELECT * FROM dcb_notes WHERE user_id = ?', [interaction.user.id]);
             if (notes.length === 0) {
                 return interaction.reply('You have no notes.');
             }
@@ -119,7 +119,7 @@ module.exports = {
 
         if (subcommand === 'view') {
             const noteId = interaction.options.getString('id');
-            const [note] = await pool.query('SELECT * FROM notes WHERE user_id = ? AND id = ?', [interaction.user.id, noteId]);
+            const [note] = await pool.query('SELECT * FROM dcb_notes WHERE user_id = ? AND id = ?', [interaction.user.id, noteId]);
             if (note.length === 0) {
                 return interaction.reply(`No note found with ID ${noteId}.`);
             }
@@ -156,13 +156,13 @@ module.exports = {
             const title = interaction.options.getString('title');
             const content = interaction.options.getString('content');
 
-            await pool.query('INSERT INTO notes (user_id, title, content) VALUES (?, ?, ?)', [interaction.user.id, title, content]);
+            await pool.query('INSERT INTO dcb_notes (user_id, title, content) VALUES (?, ?, ?)', [interaction.user.id, title, content]);
             await interaction.reply(`Note added: **${title}**`);
         }
 
         if (subcommand === 'remove') {
             const noteId = interaction.options.getString('id');
-            const result = await pool.query('DELETE FROM notes WHERE user_id = ? AND id = ?', [interaction.user.id, noteId]);
+            const result = await pool.query('DELETE FROM dcb_notes WHERE user_id = ? AND id = ?', [interaction.user.id, noteId]);
             if (result.affectedRows > 0) {
                 await interaction.reply(`Note with ID ${noteId} removed.`);
             } else {

@@ -4,7 +4,7 @@ const { consoleLog } = require('./logger');
 const guildSettings = {};
 
 const loadGuildSettings = async () => {
-    const [settings] = await database.getDbPool().query('SELECT * FROM guild_settings');
+    const [settings] = await database.getDbPool().query('SELECT * FROM dcb_guild_settings');
     settings.forEach(setting => {
         guildSettings[setting.guild_id] = {
             joinLogId: setting.join_log_id,
