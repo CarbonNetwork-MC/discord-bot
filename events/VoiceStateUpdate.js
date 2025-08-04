@@ -6,11 +6,8 @@ module.exports = {
     name: Events.VoiceStateUpdate,
     once: false,
     execute: (oldState, newState) => {
-        const logChannel = newState.guild.channels.cache.find(channel => channel.id === guildSettings[newState.guild.id]?.modLogId);
-        if (!logChannel) {
-            consoleLog('warning', `No log channel found for guild: ${newState.guild.id}`);
-            return;
-        }
+        const logChannel = newState.guild.channels.cache.find(ch => ch.id === guildSettings[newChannel.guild.id]?.modLogId);
+        if (!logChannel) return;
         
         // This fires when a user joins a voice channel
         if (!oldState.channelId && newState.channelId) {

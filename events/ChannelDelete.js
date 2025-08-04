@@ -7,10 +7,7 @@ module.exports = {
     once: false,
     execute: (channel) => {
         const logChannel = channel.guild.channels.cache.find(ch => ch.id === guildSettings[channel.guild.id]?.modLogId);
-        if (!logChannel) {
-            consoleLog('warning', `No log channel found for guild: ${channel.guild.id}`);
-            return;
-        }
+        if (!logChannel) return;
 
         const embed = new EmbedBuilder()
             .setTitle(':wastebasket: Channel deleted')

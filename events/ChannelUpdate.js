@@ -7,13 +7,8 @@ module.exports = {
     name: Events.ChannelUpdate,
     once: false,
     execute: async (oldChannel, newChannel) => {
-        const logChannel = newChannel.guild.channels.cache.find(
-            ch => ch.id === guildSettings[newChannel.guild.id]?.modLogId
-        );
-        if (!logChannel) {
-            consoleLog('warning', `No log channel found for guild: ${newChannel.guild.id}`);
-            return;
-        }
+        const logChannel = newChannel.guild.channels.cache.find(ch => ch.id === guildSettings[newChannel.guild.id]?.modLogId);
+        if (!logChannel) return;
 
         const changes = [];
 
