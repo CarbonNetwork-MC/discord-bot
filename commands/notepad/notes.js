@@ -93,7 +93,7 @@ module.exports = {
 
             const closeEmbed = new EmbedBuilder()
                 .setDescription('Notes closed.')
-                .setColor(process.env.EMBED_COLOR_RED)
+                .setColor(process.env.COLOR_RED)
                 .setFooter({ text: process.env.EMBED_FOOTER })
                 .setTimestamp();
 
@@ -137,7 +137,7 @@ module.exports = {
 
             const message = await interaction.reply({ embeds: [noteEmbed], components: [row], fetchReply: true });
 
-            const collector = message.createMessageComponentCollector({ time: 10000 });
+            const collector = message.createMessageComponentCollector({ time: 60000 });
 
             collector.on('collect', async (btn) => {
                 if (btn.user.id !== interaction.user.id) return btn.reply({ content: 'You cannot use this button.', ephemeral: true });

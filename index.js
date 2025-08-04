@@ -82,6 +82,6 @@ for (const file of eventFiles) {
     }
 
     // Deploy commands and login after DB + settings
-    await deployCommands(client, true, false);
+    await deployCommands(client, false);
     client.login(process.env.TOKEN);
 })();
