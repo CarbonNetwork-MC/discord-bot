@@ -48,18 +48,37 @@ for (const folder of commandFolders) {
 }
 
 // Load event handlers from the events directory
-const eventsPath = path.join(__dirname, 'events');
-const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
+function getFiles(dir) {
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
 
-for (const file of eventFiles) {
-	const filePath = path.join(eventsPath, file);
-	const event = require(filePath);
-	if (event.once) {
-		client.once(event.name, (...args) => event.execute(...args));
-	} else {
-		client.on(event.name, (...args) => event.execute(...args));
-	}
+    return entries.flatMap(entry => {
+        const fullPath = path.join(dir, entry.name);
+
+        if (entry.isDirectory()) {
+            return getFiles(fullPath);
+        }
+
+        return entry.name.endsWith('.js') ? [fullPath] : [];
+    });
 }
+
+const eventsPath = path.join(__dirname, 'events');
+const eventFiles = getFiles(eventsPath);
+
+for (const filePath of eventFiles) {
+    const event = require(filePath);
+
+    if (event.once) {
+        client.once(event.name, (...args) => event.execute(...args));
+    } else {
+        client.on(event.name, (...args) => event.execute(...args));
+    }
+
+    // # Debugging: Log the loaded event handler
+    // consoleLog('system', `Loaded event handler: ${event.name} from ${filePath}`);
+}
+
+consoleLog('system', `Successfully loaded ${eventFiles.length} event handlers.`);
 
 /*
  * Initialize the database pool
