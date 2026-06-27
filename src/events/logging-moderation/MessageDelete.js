@@ -11,6 +11,9 @@ module.exports = {
         const modLogChannel = getModLogChannel(message.guild);
         if (!modLogChannel) return;
 
+        // Ignore messages which contain embeds and are send by a bot, as these are likely system messages or automated messages
+        if (message.embeds.length > 0 && message.author.bot) return;
+
         let deletedBy = 'Unknown';
 
         // Fetch the audit logs to find out who deleted the message
@@ -42,11 +45,17 @@ module.exports = {
                 `**Author:** ${message.author.tag} (<@${message.author.id}>)\n` +
                 `**Deleted by:** ${deletedBy}\n` +
                 `**Channel:** <#${message.channel.id}>\n` +
-                `**Message Content:** \n\n${message.content || 'No content'}`
+                `**Message Content:** \n${message.content || 'No message content (possibly an embed or attachment)'}`
             )
             .setColor(process.env.COLOR_RED)
             .setFooter({ text: process.env.EMBED_FOOTER })
             .setTimestamp();
+
+        // If the message had attachments, add them to the embed
+        if (message.attachments.size > 0) {
+            const attachmentUrls = message.attachments.map(att => att.url).join('\n');
+            embed.addFields({ name: 'Attachments', value: attachmentUrls });
+        }
 
         modLogChannel.send({ embeds: [embed] });
     }
