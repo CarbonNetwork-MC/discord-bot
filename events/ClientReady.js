@@ -7,9 +7,9 @@ module.exports = {
     execute: (client) => {
         // ! Status
         const statuses = [
-            { name: 'Joxy', type: ActivityType.Listening },
-            { name: 'you', type: ActivityType.Watching },
-            { name: 'Minecraft', type: ActivityType.Playing }
+            { name: 'Listening to Joxy', type: ActivityType.Listening },
+            { name: 'Watching you', type: ActivityType.Watching },
+            { name: 'Playing Minecraft', type: ActivityType.Playing }
         ];
 
         let index = 0;
