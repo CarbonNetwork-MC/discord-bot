@@ -5,7 +5,7 @@
 # Events
 | **#** | **Priority** | **Event** | **Joinlog** | **Done** |
 |---|---|---|---|---|
-| **1** | 1 | MessageDelete |  |  |
+| **1** | 1 | MessageDelete |  | ✓ |
 | **2** | 1 | MessageBulkDelete |  |  |
 | **3** | 1 | MessageUpdate |  |  |
 | **4** | 1 | GuildMemberAdd | ✓ |  |
