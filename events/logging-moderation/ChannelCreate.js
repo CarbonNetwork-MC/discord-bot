@@ -1,7 +1,7 @@
 const { Events, EmbedBuilder, ChannelType } = require('discord.js');
 
 const { consoleLog } = require('../../src/logger.js');
-const { guildSettings } = require('../../src/guild-settings.js');
+const { getModLogChannel } = require('../../utils/channelUtils.js');
 const { compareOverwrites } = require('../../utils/compareOverwrites.js');
 const { formatPermissions } = require('../../utils/formatPermissions.js');
 
@@ -11,7 +11,7 @@ module.exports = {
     name: Events.ChannelCreate,
     once: false,
     execute: (channel) => {
-        const logChannel = channel.guild.channels.cache.find(ch => ch.id === guildSettings[channel.guild.id]?.modLogId);
+        const logChannel = getModLogChannel(channel.guild);
         if (!logChannel) return;
 
         // Format channel type

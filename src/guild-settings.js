@@ -25,7 +25,37 @@ const loadGuildSettings = async () => {
     consoleLog('system', 'Guild settings loaded successfully.');
 };
 
+function getGuildSettings(guildId) {
+    return guildSettings[guildId] ?? null;
+}
+
+function getJoinLogId(guildId) {
+    return guildSettings[guildId]?.joinLogId ?? null;
+}
+
+function getModLogId(guildId) {
+    return guildSettings[guildId]?.modLogId ?? null;
+}
+
+function getMuteRoleId(guildId) {
+    return guildSettings[guildId]?.muteRoleId ?? null;
+}
+
+function getWelcomeMessage(guildId) {
+    return guildSettings[guildId]?.welcomeMessage ?? null;
+}
+
+function getLeaveMessage(guildId) {
+    return guildSettings[guildId]?.leaveMessage ?? null;
+}
+
 module.exports = {
-    guildSettings,
+    guildSettings, // ! DEPRECATED: Use the getter functions instead of accessing this object directly
     loadGuildSettings,
+    getGuildSettings,
+    getJoinLogId,
+    getModLogId,
+    getMuteRoleId,
+    getWelcomeMessage,
+    getLeaveMessage,
 };

@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { getDbPool } = require('../src/database');
-const { guildSettings } = require('../src/guild-settings');
+const { getGuildSettings } = require('../src/guild-settings');
 const { formatTime } = require('../utils/timeFormatter');
 
 async function getWarns(interaction) {
@@ -31,7 +31,7 @@ async function applyMute(interaction) {
     const muteRole = interaction.guild.roles.cache.find(role => role.name === 'Muted');
     const moderator = interaction.user;
 
-    const settings = await guildSettings[guildId];
+    const settings = await getGuildSettings(guildId);
     const db = getDbPool();
 
     const embed = new EmbedBuilder()
@@ -62,5 +62,5 @@ async function applyMute(interaction) {
 
 module.exports = {
     getWarns,
-    addWarn
+    addWarn,
 };

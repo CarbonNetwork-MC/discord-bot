@@ -1,13 +1,13 @@
 const { Events, EmbedBuilder } = require('discord.js');
 const { consoleLog } = require('../../src/logger.js');
-const { guildSettings } = require('../../src/guild-settings.js');
+const { getModLogChannel } = require('../../utils/channelUtils.js');
 const { compareOverwrites } = require('../../utils/compareOverwrites.js');
 
 module.exports = {
     name: Events.ChannelUpdate,
     once: false,
     execute: async (oldChannel, newChannel) => {
-        const logChannel = newChannel.guild.channels.cache.find(ch => ch.id === guildSettings[newChannel.guild.id]?.modLogId);
+        const logChannel = getModLogChannel(newChannel.guild);
         if (!logChannel) return;
 
         const changes = [];

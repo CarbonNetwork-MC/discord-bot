@@ -1,12 +1,12 @@
 const { Events, EmbedBuilder } = require('discord.js');
 const { consoleLog } = require('../../src/logger.js');
-const { guildSettings } = require('../../src/guild-settings.js');
+const { getModLogChannel } = require('../../utils/channelUtils.js');
 
 module.exports = {
     name: Events.ChannelDelete,
     once: false,
     execute: (channel) => {
-        const logChannel = channel.guild.channels.cache.find(ch => ch.id === guildSettings[channel.guild.id]?.modLogId);
+        const logChannel = getModLogChannel(channel.guild);
         if (!logChannel) return;
 
         const embed = new EmbedBuilder()

@@ -1,14 +1,12 @@
 const { Events, EmbedBuilder } = require('discord.js');
 const { consoleLog } = require('../../src/logger.js');
-const { guildSettings } = require('../../src/guild-settings.js');
+const { getModLogChannel } = require('../../utils/channelUtils.js');
 
 module.exports = {
     name: Events.VoiceStateUpdate,
     once: false,
     execute: (oldState, newState) => {
-        const modLogId = guildSettings[newState.guild.id]?.modLogId;
-        if (!modLogId) return;
-        const logChannel = newState.guild.channels.cache.find(ch => ch.id === modLogId);
+        const logChannel = getModLogChannel(newState.guild);
         if (!logChannel) return;
         
         // This fires when a user joins a voice channel
