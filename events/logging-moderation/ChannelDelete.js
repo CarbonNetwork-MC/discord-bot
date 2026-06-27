@@ -1,6 +1,6 @@
 const { Events, EmbedBuilder } = require('discord.js');
-const { consoleLog } = require('../src/logger.js');
-const { guildSettings } = require('../src/guild-settings.js');
+const { consoleLog } = require('../../src/logger.js');
+const { guildSettings } = require('../../src/guild-settings.js');
 
 module.exports = {
     name: Events.ChannelDelete,
