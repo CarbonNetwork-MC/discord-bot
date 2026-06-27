@@ -4,6 +4,8 @@ const { consoleLog } = require('../../services/logger.js');
 const { getModLogChannel } = require('../../utils/channelUtils.js');
 const { checkIfBotHasPermission } = require('../../utils/BotPermissions.js');
 
+const ChannelTypes = require('../../config/enums/ChannelTypeLabels.js');
+
 module.exports = {
     name: Events.ChannelDelete,
     once: false,
@@ -42,7 +44,7 @@ module.exports = {
                 `**Category:** ${channel.parent?.name ?? 'None'}\n` +
                 `**Deleted By:** ${deletedBy}\n` +
                 `**ID:** ${channel.id}\n` +
-                `**Type:** ${channel.type}\n`
+                `**Type:** ${ChannelTypes[channel.type] ?? 'Unknown'}\n`
             )
             .setColor(process.env.COLOR_RED)
             .setFooter({ text: process.env.EMBED_FOOTER })
