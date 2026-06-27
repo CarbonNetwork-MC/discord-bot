@@ -1,6 +1,8 @@
 const { Events, EmbedBuilder, AuditLogEvent } = require('discord.js');
+
 const { consoleLog } = require('../../services/logger.js');
 const { checkModlogChannel, getModLogChannel } = require('../../utils/channelUtils.js');
+const { checkIfBotHasPermission } = require('../../utils/BotPermissions.js');
 
 module.exports = {
     name: Events.MessageDelete,
@@ -16,26 +18,29 @@ module.exports = {
 
         let deletedBy = 'Unknown';
 
-        // Fetch the audit logs to find out who deleted the message
-        try {
-            const auditLogs = await message.guild.fetchAuditLogs({
-                type: AuditLogEvent.MessageDelete,
-                limit: 5,
-            });
+        // Check if the bot has permission to view the audit logs
+        if (checkIfBotHasPermission(message.guild, 'ViewAuditLog')) {
+            // Fetch the audit logs to find out who deleted the message
+            try {
+                const auditLogs = await message.guild.fetchAuditLogs({
+                    type: AuditLogEvent.MessageDelete,
+                    limit: 5,
+                });
 
-            const deletionLog = auditLogs.entries.find(entry =>
-                entry.target.id === message.author.id &&
-                entry.extra.channel.id === message.channel.id &&
-                Date.now() - entry.createdTimestamp < 5000 // Check if the deletion happened within the last 5 seconds
-            );
+                const deletionLog = auditLogs.entries.find(entry =>
+                    entry.target.id === message.author.id &&
+                    entry.extra.channel.id === message.channel.id &&
+                    Date.now() - entry.createdTimestamp < 5000 // Check if the deletion happened within the last 5 seconds
+                );
 
-            if (deletionLog) {
-                deletedBy = `${deletionLog.executor.tag} (<@${deletionLog.executor.id}>)`;
-            } else {
-                deletedBy = `${message.author.tag} (<@${message.author.id}>)`;
+                if (deletionLog) {
+                    deletedBy = `${deletionLog.executor.tag} (<@${deletionLog.executor.id}>)`;
+                } else {
+                    deletedBy = `${message.author.tag} (<@${message.author.id}>)`;
+                }
+            } catch (err) {
+                consoleLog('error', `Error fetching audit logs for message deletion: ${err}`);
             }
-        } catch (err) {
-            consoleLog('error', `Error fetching audit logs for message deletion: ${err}`);
         }
 
         // Author, Deleted by, Channel, Message Content

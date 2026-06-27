@@ -1,7 +1,9 @@
 const { Events, EmbedBuilder, AuditLogEvent } = require('discord.js');
+
 const { consoleLog } = require('../../services/logger.js');
 const { getModLogChannel } = require('../../utils/channelUtils.js');
 const { compareOverwrites } = require('../../utils/compareOverwrites.js');
+const { checkIfBotHasPermission } = require('../../utils/BotPermissions.js');
 
 module.exports = {
     name: Events.ChannelUpdate,
@@ -14,23 +16,26 @@ module.exports = {
 
         let updatedBy = 'Unknown';
 
-        // Fetch the audit logs to find out who updated the channel
-        try {
-            const auditLogs = await newChannel.guild.fetchAuditLogs({
-                type: AuditLogEvent.ChannelUpdate,
-                limit: 5,
-            });
+        // Check if the bot has permission to view the audit logs
+        if (checkIfBotHasPermission(newChannel.guild, 'ViewAuditLog')) {
+            // Fetch the audit logs to find out who updated the channel
+            try {
+                const auditLogs = await newChannel.guild.fetchAuditLogs({
+                    type: AuditLogEvent.ChannelUpdate,
+                    limit: 5,
+                });
 
-            const updateLog = auditLogs.entries.find(entry =>
-                entry.target.id === newChannel.id &&
-                Date.now() - entry.createdTimestamp < 5000 // Check if the update happened within the last 5 seconds
-            );
+                const updateLog = auditLogs.entries.find(entry =>
+                    entry.target.id === newChannel.id &&
+                    Date.now() - entry.createdTimestamp < 5000 // Check if the update happened within the last 5 seconds
+                );
 
-            if (updateLog) {
-                updatedBy = `${updateLog.executor.tag} (<@${updateLog.executor.id}>)`;
+                if (updateLog) {
+                    updatedBy = `${updateLog.executor.tag} (<@${updateLog.executor.id}>)`;
+                }
+            } catch (err) {
+                consoleLog('error', `Error fetching audit logs for channel update: ${err}`);
             }
-        } catch (err) {
-            consoleLog('error', `Error fetching audit logs for channel update: ${err}`);
         }
 
         // Header: Channel name, ID, and who updated it

@@ -1,4 +1,4 @@
-const { guildSettings, getModLogId, getJoinLogId } = require('../config/guild-settings.js');
+const { guildSettings, getModLogId, getSystemLogId, getJoinLogId } = require('../config/guild-settings.js');
 
 function checkModlogChannel(guild) {
     const modLogId = getModLogId(guild.id);
@@ -52,9 +52,23 @@ function getJoinLogChannel(guild) {
     return joinLogChannel;
 }
 
+function getSystemLogChannel(guild) {
+    const systemLogId = getSystemLogId(guild.id);
+
+    // Check if systemLogId is defined and not null
+    if (!systemLogId) return null;
+
+    // Check if the channel exists in the guild
+    const systemLogChannel = guild.channels.cache.get(systemLogId);
+    if (!systemLogChannel) return null;
+
+    return systemLogChannel;
+}
+
 module.exports = { 
     checkModlogChannel,
     checkJoinlogChannel,
     getModLogChannel,
-    getJoinLogChannel
+    getJoinLogChannel,
+    getSystemLogChannel
 };

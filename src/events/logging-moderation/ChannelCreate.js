@@ -3,7 +3,7 @@ const { Events, EmbedBuilder, AuditLogEvent } = require('discord.js');
 const { consoleLog } = require('../../services/logger.js');
 const { getModLogChannel } = require('../../utils/channelUtils.js');
 const { compareOverwrites } = require('../../utils/compareOverwrites.js');
-const { formatPermissions } = require('../../utils/formatPermissions.js');
+const { checkIfBotHasPermission } = require('../../utils/BotPermissions.js');
 
 const ChannelTypes = require('../../config/enums/ChannelTypeLabels.js');
 
@@ -26,23 +26,26 @@ module.exports = {
 
         let createdBy = 'Unknown';
 
-        // Fetch the audit logs to find out who created the channel
-        try {
-            const auditLogs = await channel.guild.fetchAuditLogs({
-                type: AuditLogEvent.ChannelCreate,
-                limit: 5,
-            });
+        // Check if the bot has permission to view the audit logs
+        if (checkIfBotHasPermission(channel.guild, 'ViewAuditLog')) {
+            // Fetch the audit logs to find out who created the channel
+            try {
+                const auditLogs = await channel.guild.fetchAuditLogs({
+                    type: AuditLogEvent.ChannelCreate,
+                    limit: 5,
+                });
 
-            const creationLog = auditLogs.entries.find(entry =>
-                entry.target.id === channel.id &&
-                Date.now() - entry.createdTimestamp < 5000 // Check if the creation happened within the last 5 seconds
-            );
+                const creationLog = auditLogs.entries.find(entry =>
+                    entry.target.id === channel.id &&
+                    Date.now() - entry.createdTimestamp < 5000 // Check if the creation happened within the last 5 seconds
+                );
 
-            if (creationLog) {
-                createdBy = `${creationLog.executor.tag} (<@${creationLog.executor.id}>)`;
+                if (creationLog) {
+                    createdBy = `${creationLog.executor.tag} (<@${creationLog.executor.id}>)`;
+                }
+            } catch (err) {
+                consoleLog('error', `Error fetching audit logs for channel creation: ${err}`);
             }
-        } catch (err) {
-            consoleLog('error', `Error fetching audit logs for channel creation: ${err}`);
         }
 
         const embed = new EmbedBuilder()

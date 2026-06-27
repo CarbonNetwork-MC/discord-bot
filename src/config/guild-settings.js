@@ -16,6 +16,7 @@ const loadGuildSettings = async () => {
         guildSettings[setting.guild_id] = {
             joinLogId: setting.join_log_id,
             modLogId: setting.mod_log_id,
+            systemLogId: setting.system_log_id,
             muteRoleId: setting.mute_role_id,
             welcomeMessage: setting.welcome_message,
             leaveMessage: setting.leave_message,
@@ -37,6 +38,10 @@ function getModLogId(guildId) {
     return guildSettings[guildId]?.modLogId ?? null;
 }
 
+function getSystemLogId(guildId) {
+    return guildSettings[guildId]?.systemLogId ?? null;
+}
+
 function getMuteRoleId(guildId) {
     return guildSettings[guildId]?.muteRoleId ?? null;
 }
@@ -55,6 +60,7 @@ module.exports = {
     getGuildSettings,
     getJoinLogId,
     getModLogId,
+    getSystemLogId,
     getMuteRoleId,
     getWelcomeMessage,
     getLeaveMessage,
