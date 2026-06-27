@@ -1,4 +1,4 @@
-const { Events, EmbedBuilder } = require('discord.js');
+const { Events, EmbedBuilder, AuditLogEvent } = require('discord.js');
 const { consoleLog } = require('../../src/logger.js');
 const { getModLogChannel } = require('../../utils/channelUtils.js');
 const { compareOverwrites } = require('../../utils/compareOverwrites.js');
@@ -12,9 +12,31 @@ module.exports = {
 
         const changes = [];
 
-        // Header: Channel name and ID
+        let updatedBy = 'Unknown';
+
+        // Fetch the audit logs to find out who updated the channel
+        try {
+            const auditLogs = await newChannel.guild.fetchAuditLogs({
+                type: AuditLogEvent.ChannelUpdate,
+                limit: 5,
+            });
+
+            const updateLog = auditLogs.entries.find(entry =>
+                entry.target.id === newChannel.id &&
+                Date.now() - entry.createdTimestamp < 5000 // Check if the update happened within the last 5 seconds
+            );
+
+            if (updateLog) {
+                updatedBy = `${updateLog.executor.tag} (<@${updateLog.executor.id}>)`;
+            }
+        } catch (err) {
+            consoleLog('error', `Error fetching audit logs for channel update: ${err}`);
+        }
+
+        // Header: Channel name, ID, and who updated it
         changes.push(`**Channel:** <#${newChannel.id}>`);
-        changes.push(`**ID:** \`${newChannel.id}\`\n`);
+        changes.push(`**ID:** \`${newChannel.id}\``);
+        changes.push(`**Updated By:** ${updatedBy}\n`);
 
         // Changed name
         if (oldChannel.name !== newChannel.name) {
