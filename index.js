@@ -68,10 +68,18 @@ const eventFiles = getFiles(eventsPath);
 for (const filePath of eventFiles) {
     const event = require(filePath);
 
+    const runEvent = async (...args) => {
+        try {
+            await event.execute(...args);
+        } catch (err) {
+            consoleLog('error', `Error in event ${event.name}: ${err}`);
+        }
+    };
+
     if (event.once) {
-        client.once(event.name, (...args) => event.execute(...args));
+        client.once(event.name, runEvent);
     } else {
-        client.on(event.name, (...args) => event.execute(...args));
+        client.on(event.name, runEvent);
     }
 
     // # Debugging: Log the loaded event handler
