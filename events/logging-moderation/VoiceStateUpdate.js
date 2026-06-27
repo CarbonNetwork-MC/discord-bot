@@ -13,7 +13,7 @@ module.exports = {
         if (!oldState.channelId && newState.channelId) {
             const embed = new EmbedBuilder()
                 .setTitle(':telephone_receiver: Member joined a voice channel')
-                .setDescription(`**${newState.member.user.tag}** joined <#${newState.channel.id}>`)
+                .setDescription(`**<@${newState.member.user.id}>** joined <#${newState.channel.id}>`)
                 .setAuthor({ name: newState.member.user.tag, iconURL: newState.member.user.displayAvatarURL() })
                 .setColor(process.env.COLOR_GREEN)
                 .setFooter({ text: process.env.EMBED_FOOTER })
@@ -27,7 +27,7 @@ module.exports = {
         if (oldState.channelId && !newState.channelId) {
             const embed = new EmbedBuilder()
                 .setTitle(':man_running: Member left a voice channel')
-                .setDescription(`**${newState.member.user.tag}** left <#${oldState.channel.id}>`)
+                .setDescription(`**<@${newState.member.user.id}>** left <#${oldState.channel.id}>`)
                 .setAuthor({ name: newState.member.user.tag, iconURL: newState.member.user.displayAvatarURL() })
                 .setColor(process.env.COLOR_RED)
                 .setFooter({ text: process.env.EMBED_FOOTER })
@@ -41,7 +41,7 @@ module.exports = {
         if (oldState.channelId && newState.channelId && oldState.channelId !== newState.channelId) {
             const embed = new EmbedBuilder()
                 .setTitle(':left_right_arrow: Member switched voice channels')
-                .setDescription(`**Before:** <#${oldState.channel.id}>\n**After:** <#${newState.channel.id}>`)
+                .setDescription(`**<@${newState.member.user.id}>** switched voice channels\n**Before:** <#${oldState.channel.id}>\n**After:** <#${newState.channel.id}>`)
                 .setAuthor({ name: newState.member.user.tag, iconURL: newState.member.user.displayAvatarURL() })
                 .setColor(process.env.COLOR_BLUE)
                 .setFooter({ text: process.env.EMBED_FOOTER })
