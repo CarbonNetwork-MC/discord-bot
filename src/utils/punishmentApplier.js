@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
-const { getDbPool } = require('../src/database');
-const { getGuildSettings } = require('../src/guild-settings');
+const { getDbPool } = require('../services/database.js');
+const { getGuildSettings } = require('../config/guild-settings.js');
 const { formatTime } = require('../utils/timeFormatter');
 
 async function getWarns(interaction) {

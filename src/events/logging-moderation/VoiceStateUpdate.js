@@ -1,5 +1,5 @@
 const { Events, EmbedBuilder } = require('discord.js');
-const { consoleLog } = require('../../src/logger.js');
+const { consoleLog } = require('../../services/logger.js');
 const { getModLogChannel } = require('../../utils/channelUtils.js');
 
 module.exports = {

@@ -1,4 +1,4 @@
-const { guildSettings, getModLogId, getJoinLogId } = require('../src/guild-settings.js');
+const { guildSettings, getModLogId, getJoinLogId } = require('../config/guild-settings.js');
 
 function checkModlogChannel(guild) {
     const modLogId = getModLogId(guild.id);

@@ -1,5 +1,5 @@
-const database = require('./database');
-const { consoleLog } = require('./logger');
+const database = require('../services/database.js');
+const { consoleLog } = require('../services/logger.js');
 
 const guildSettings = {};
 

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
-const db = require('../../src/database.js');
+const db = require('../../services/database.js');
 
 module.exports = {
     data: new SlashCommandBuilder()

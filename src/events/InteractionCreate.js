@@ -1,5 +1,5 @@
 const { Events, MessageFlags } = require('discord.js');
-const { consoleLog } = require('../src/logger.js');
+const { consoleLog } = require('../services/logger.js');
 
 module.exports = {
     name: Events.InteractionCreate,

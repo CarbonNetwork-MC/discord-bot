@@ -7,7 +7,7 @@ module.exports = {
         .setDescription('Get the letter combinations for Forewarned'),
 
     async execute(interaction) {
-        const imagePath = path.join(__dirname, '../../src/images/letters.png');
+        const imagePath = path.join(__dirname, '../../src/storage/images/letters.png');
 
         const attachment = new AttachmentBuilder(imagePath, {
             name: 'letters.png',

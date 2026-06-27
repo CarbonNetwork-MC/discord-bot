@@ -1,12 +1,15 @@
-require('dotenv').config();
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const deployCommands = require('./src/deploy-commands');
-const { consoleLog } = require('./src/logger.js');
-const { loadGuildSettings } = require('./src/guild-settings');
-const database = require('./src/database.js');
+require('dotenv').config({
+    path: path.resolve(__dirname, '../.env'),
+});
+
+const deployCommands = require('./services/deploy-commands.js');
+const { consoleLog } = require('./services/logger.js');
+const { loadGuildSettings } = require('./config/guild-settings.js');
+const database = require('./services/database.js');
 
 const client = new Client({ 
     intents: [

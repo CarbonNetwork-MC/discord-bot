@@ -1,6 +1,6 @@
 const { PermissionsBitField } = require('discord.js');
 
-const PERMISSION_LABELS = require('../src/enums/PermissionLabels.js');
+const PERMISSION_LABELS = require('../config/enums/PermissionLabels.js');
 
 function formatPermissions(permissionsArray) {
     return permissionsArray

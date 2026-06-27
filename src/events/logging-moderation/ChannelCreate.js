@@ -1,11 +1,11 @@
 const { Events, EmbedBuilder, AuditLogEvent } = require('discord.js');
 
-const { consoleLog } = require('../../src/logger.js');
+const { consoleLog } = require('../../services/logger.js');
 const { getModLogChannel } = require('../../utils/channelUtils.js');
 const { compareOverwrites } = require('../../utils/compareOverwrites.js');
 const { formatPermissions } = require('../../utils/formatPermissions.js');
 
-const ChannelTypes = require('../../src/enums/ChannelTypeLabels.js');
+const ChannelTypes = require('../../config/enums/ChannelTypeLabels.js');
 
 module.exports = {
     name: Events.ChannelCreate,
