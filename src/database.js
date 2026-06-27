@@ -12,8 +12,7 @@ async function initDbPool(retries = 3, delay = 2000) {
         database: process.env.DB_NAME,
         waitForConnections: true,
         connectionLimit: 10,
-        queueLimit: 0,
-        ssl: { rejectUnauthorized: false }
+        queueLimit: 0
     });
 
     for (let attempt = 1; attempt <= retries; attempt++) {

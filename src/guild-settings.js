@@ -4,7 +4,14 @@ const { consoleLog } = require('./logger');
 const guildSettings = {};
 
 const loadGuildSettings = async () => {
-    const [settings] = await database.getDbPool().query('SELECT * FROM dcb_guild_settings');
+    consoleLog('system', 'Loading guild settings...');
+
+    const pool = database.getDbPool();
+
+    const [settings] = await pool.query('SELECT * FROM dcb_guild_settings');
+
+    consoleLog('system', `Fetched ${settings.length} guild settings`);
+
     settings.forEach(setting => {
         guildSettings[setting.guild_id] = {
             joinLogId: setting.join_log_id,
@@ -14,6 +21,7 @@ const loadGuildSettings = async () => {
             leaveMessage: setting.leave_message,
         };
     });
+
     consoleLog('system', 'Guild settings loaded successfully.');
 };
 

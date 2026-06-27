@@ -68,20 +68,19 @@ for (const file of eventFiles) {
  * Login the client
 */
 (async () => {
-    // Initialize DB pool first
+    consoleLog('system', 'Starting bot bootstrap');
+
     const pool = await database.initDbPool(5, 1000);
+    consoleLog('system', 'initDbPool finished');
 
     if (pool) {
-        try {
-            await loadGuildSettings();
-        } catch (err) {
-            consoleLog('error', `Failed to load guild settings: ${err.message}`);
-        }
-    } else {
-        consoleLog('error', 'Guild settings not loaded because database pool could not be initialized.');
+        consoleLog('system', 'Calling loadGuildSettings');
+        await loadGuildSettings();
     }
 
-    // Deploy commands and login after DB + settings
+    consoleLog('system', 'Deploying commands');
     await deployCommands(client, false);
-    client.login(process.env.TOKEN);
+
+    consoleLog('system', 'Logging in');
+    await client.login(process.env.TOKEN);
 })();
