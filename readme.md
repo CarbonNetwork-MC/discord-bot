@@ -1,0 +1,1 @@
+Discord bot for Carbon Network's discord servers

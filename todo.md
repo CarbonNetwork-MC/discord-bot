@@ -28,3 +28,7 @@
 | **21** | 3 | GuildScheduledEventUpdate |  |  |
 
 # Commands
+- Replace `prune` with `purge` (see image)
+
+![Purge Preview](/docs/images/purge_1.png)
+![Purge Preview](/docs/images/purge_2.png)
