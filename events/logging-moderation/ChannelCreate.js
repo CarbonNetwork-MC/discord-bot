@@ -5,6 +5,8 @@ const { guildSettings } = require('../../src/guild-settings.js');
 const { compareOverwrites } = require('../../utils/compareOverwrites.js');
 const { formatPermissions } = require('../../utils/formatPermissions.js');
 
+const ChannelTypes = require('../../src/enums/ChannelTypeLabels.js');
+
 module.exports = {
     name: Events.ChannelCreate,
     once: false,
@@ -13,7 +15,7 @@ module.exports = {
         if (!logChannel) return;
 
         // Format channel type
-        const typeName = TYPE_LABELS[channel.type] || 'Unknown';
+        const typeName = ChannelTypes[channel.type] || 'Unknown';
 
         // Role overrides (new channel vs. empty old state)
         const permChanges = compareOverwrites(
