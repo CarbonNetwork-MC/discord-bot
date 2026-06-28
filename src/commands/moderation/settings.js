@@ -17,7 +17,9 @@ module.exports = {
                     { name: 'System Log Channel ID', value: 'system_log_id' },
                     { name: 'Mute Role ID', value: 'mute_role_id' },
                     { name: 'Welcome Message', value: 'welcome_message' },
-                    { name: 'Leave Message', value: 'leave_message' }
+                    { name: 'Leave Message', value: 'leave_message' },
+                    { name: 'Welcome Enabled', value: 'welcome_enabled' },
+                    { name: 'Leave Enabled', value: 'leave_enabled' }
                 )
             )
         .addStringOption(option => 
@@ -40,6 +42,8 @@ module.exports = {
             let muteRole = settings.muteRoleId ? `<@&${settings.muteRoleId}>` : 'Not set';
             let welcomeMessage = settings.welcomeMessage || 'Not set';
             let leaveMessage = settings.leaveMessage || 'Not set';
+            let welcomeEnabled = settings.welcomeEnabled ? ':white_check_mark: Enabled' : ':x: Disabled';
+            let leaveEnabled = settings.leaveEnabled ? ':white_check_mark: Enabled' : ':x: Disabled';
 
             const embed = new EmbedBuilder()
                 .setTitle(`Server Settings for ${interaction.guild.name}`)
@@ -50,7 +54,9 @@ module.exports = {
                     { name: 'System Log Channel ID', value: systemLogChannel, inline: true },
                     { name: 'Mute Role ID', value: muteRole, inline: true },
                     { name: 'Welcome Message', value: welcomeMessage, inline: false },
-                    { name: 'Leave Message', value: leaveMessage, inline: false }
+                    { name: 'Leave Message', value: leaveMessage, inline: false },
+                    { name: 'Welcome Enabled', value: welcomeEnabled, inline: true },
+                    { name: 'Leave Enabled', value: leaveEnabled, inline: true }
                 )
                 .setFooter({ text: process.env.EMBED_FOOTER })
                 .setTimestamp();
