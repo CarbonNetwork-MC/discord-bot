@@ -43,7 +43,9 @@ const reloadSettingsForGuild = async (guildId) => {
         modLogId: setting.mod_log_id,
         systemLogId: setting.system_log_id,
         muteRoleId: setting.mute_role_id,
+        welcomeEnabled: setting.welcome_enabled,
         welcomeMessage: setting.welcome_message,
+        leaveEnabled: setting.leave_enabled,
         leaveMessage: setting.leave_message,
     };
 };
