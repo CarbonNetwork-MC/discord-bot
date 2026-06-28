@@ -9,8 +9,8 @@
 | **2** | 1 | MessageBulkDelete |  | ✓ |
 | **3** | 1 | MessageUpdate |  | ✓ |
 | **4** | 1 | GuildMemberAdd | ✓ | ✓ |
-| **5** | 1 | GuildMemberRemove | ✓ |  |
-| **6** | 1 | GuildMemberUpdate |  |  |
+| **5** | 1 | GuildMemberRemove | ✓ | ✓ |
+| **6** | 1 | GuildMemberUpdate |  | ✓ |
 | **7** | 1 | GuildBanAdd |  |  |
 | **8** | 1 | GuildBanRemove |  |  |
 | **9** | 2 | RoleCreate |  |  |
