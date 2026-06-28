@@ -7,8 +7,8 @@
 |---|---|---|---|---|
 | **1** | 1 | MessageDelete |  | ✓ |
 | **2** | 1 | MessageBulkDelete |  | ✓ |
-| **3** | 1 | MessageUpdate |  |  |
-| **4** | 1 | GuildMemberAdd | ✓ |  |
+| **3** | 1 | MessageUpdate |  | ✓ |
+| **4** | 1 | GuildMemberAdd | ✓ | ✓ |
 | **5** | 1 | GuildMemberRemove | ✓ |  |
 | **6** | 1 | GuildMemberUpdate |  |  |
 | **7** | 1 | GuildBanAdd |  |  |

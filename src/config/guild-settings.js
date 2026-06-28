@@ -18,7 +18,9 @@ const loadGuildSettings = async () => {
             modLogId: setting.mod_log_id,
             systemLogId: setting.system_log_id,
             muteRoleId: setting.mute_role_id,
+            welcomeEnabled: setting.welcome_enabled,
             welcomeMessage: setting.welcome_message,
+            leaveEnabled: setting.leave_enabled,
             leaveMessage: setting.leave_message,
         };
     });
@@ -66,8 +68,16 @@ function getMuteRoleId(guildId) {
     return guildSettings[guildId]?.muteRoleId ?? null;
 }
 
+function isWelcomeEnabled(guildId) {
+    return guildSettings[guildId]?.welcomeEnabled ?? false;
+}
+
 function getWelcomeMessage(guildId) {
     return guildSettings[guildId]?.welcomeMessage ?? null;
+}
+
+function isLeaveEnabled(guildId) {
+    return guildSettings[guildId]?.leaveEnabled ?? false;
 }
 
 function getLeaveMessage(guildId) {
@@ -82,6 +92,8 @@ module.exports = {
     getModLogId,
     getSystemLogId,
     getMuteRoleId,
+    isWelcomeEnabled,
     getWelcomeMessage,
+    isLeaveEnabled,
     getLeaveMessage,
 };
