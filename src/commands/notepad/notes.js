@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, MessageFlags } = require('discord.js');
 const db = require('../../services/database.js');
 
 module.exports = {
@@ -9,6 +9,15 @@ module.exports = {
             subcommand
                 .setName('list')
                 .setDescription('Get a list of your notes')
+                .addStringOption(option =>
+                    option.setName('visibility')
+                        .setDescription('Whether only you or everyone can see the response')
+                        .addChoices(
+                            { name: 'Only me', value: 'private' },
+                            { name: 'Everyone', value: 'public' }
+                        )
+                        .setRequired(false)
+                )
         )
         .addSubcommand(subcommand =>
             subcommand
@@ -18,6 +27,15 @@ module.exports = {
                     option.setName('id')
                         .setDescription('The ID of the note to view')
                         .setRequired(true)
+                )
+                .addStringOption(option =>
+                    option.setName('visibility')
+                        .setDescription('Whether only you or everyone can see the response')
+                        .addChoices(
+                            { name: 'Only me', value: 'private' },
+                            { name: 'Everyone', value: 'public' }
+                        )
+                        .setRequired(false)
                 )
         )
         .addSubcommand(subcommand =>
@@ -34,6 +52,15 @@ module.exports = {
                         .setDescription('The content of the note')
                         .setRequired(true)
                 )
+                .addStringOption(option =>
+                    option.setName('visibility')
+                        .setDescription('Whether only you or everyone can see the response')
+                        .addChoices(
+                            { name: 'Only me', value: 'private' },
+                            { name: 'Everyone', value: 'public' }
+                        )
+                        .setRequired(false)
+                )
         )
         .addSubcommand(subcommand =>
             subcommand
@@ -48,6 +75,9 @@ module.exports = {
     async execute(interaction) {
         const subcommand = interaction.options.getSubcommand();
         const pool = db.getDbPool();
+
+        const visibility = interaction.options.getString('visibility') ?? 'private';
+        const ephemeral = visibility === 'private';
 
         if (subcommand === 'list') {
             const [notes] = await pool.query('SELECT * FROM dcb_notes WHERE user_id = ?', [interaction.user.id]);
@@ -64,7 +94,7 @@ module.exports = {
                 const end = start + perPage;
                 const pageNotes = notes.slice(start, end);
 
-                const notesMap = pageNotes.map(note => `**[${note.id}]:** ${note.title}`).join('\n');
+                const notesMap = pageNotes.map(note => `**[ ${note.id} ]:** ${note.title}`).join('\n');
                 const pageDescription = notesMap 
                     ? notesMap + `\n\n📄 **${notes.length} |** To view a note, use \`/notes view <id>\``
                     : 'No notes found on this page.';
@@ -78,18 +108,26 @@ module.exports = {
             }
 
             // Create action row with buttons
-            row = new ActionRowBuilder().addComponents(
+            const row = new ActionRowBuilder().addComponents(
                 new ButtonBuilder().setCustomId('prev').setLabel('<').setStyle(ButtonStyle.Secondary),
-                new ButtonBuilder().setCustomId('next').setLabel('>').setStyle(ButtonStyle.Secondary),
-                new ButtonBuilder().setCustomId('close').setLabel('X').setStyle(ButtonStyle.Danger)
+                new ButtonBuilder().setCustomId('next').setLabel('>').setStyle(ButtonStyle.Secondary)
             );
 
+            if (!ephemeral) {
+                row.addComponents(
+                    new ButtonBuilder().setCustomId('close').setLabel('X').setStyle(ButtonStyle.Danger)
+                )
+            }
+
             // Send message
-            const message = await interaction.reply({
+            const response = await interaction.reply({
                 embeds: [getEmbed(page)],
                 components: [row],
-                fetchReply: true
+                withResponse: true,
+                flags: ephemeral ? MessageFlags.Ephemeral : undefined
             });
+
+            const message = await interaction.fetchReply();
 
             const closeEmbed = new EmbedBuilder()
                 .setDescription('Notes closed.')
@@ -106,14 +144,19 @@ module.exports = {
                 if (btn.customId === 'next') page = Math.min(totalPages - 1, page + 1);
                 if (btn.customId === 'close') {
                     await btn.update({ embeds: [closeEmbed], components: [] });
-                    return collector.stop();
+                    return collector.stop('closed');
                 }
 
                 await btn.update({ embeds: [getEmbed(page)], components: [row] });
             })
 
-            collector.on('end', () => {
-                message.edit({ embeds: [closeEmbed], components: [] }).catch(() => {});
+            collector.on('end', async (_, reason) => {
+                if (reason === 'closed') return;
+
+                await interaction.editReply({
+                    embeds: [closeEmbed],
+                    components: []
+                }).catch(() => {});
             });
         }
 
@@ -121,7 +164,17 @@ module.exports = {
             const noteId = interaction.options.getString('id');
             const [note] = await pool.query('SELECT * FROM dcb_notes WHERE user_id = ? AND id = ?', [interaction.user.id, noteId]);
             if (note.length === 0) {
-                return interaction.reply(`No note found with ID ${noteId}.`);
+                const embed = new EmbedBuilder()
+                    .setTitle(':x: Note not found')
+                    .setDescription(`No note found with ID ${noteId}.`)
+                    .setColor(process.env.COLOR_RED)
+                    .setFooter({ text: process.env.EMBED_FOOTER })
+                    .setTimestamp();
+
+                return interaction.reply({ 
+                    embeds: [embed],
+                    flags: MessageFlags.Ephemeral
+                });
             }
 
             const noteEmbed = new EmbedBuilder()
@@ -131,25 +184,41 @@ module.exports = {
                 .setFooter({ text: process.env.EMBED_FOOTER })
                 .setTimestamp();
 
-            row = new ActionRowBuilder().addComponents(
-                new ButtonBuilder().setCustomId('close').setLabel('X').setStyle(ButtonStyle.Danger)
-            );
+            if (ephemeral) {
+                await interaction.reply({ 
+                    embeds: [noteEmbed],
+                    flags: MessageFlags.Ephemeral
+                });
+            } else {
+                const row = new ActionRowBuilder().addComponents(
+                    new ButtonBuilder().setCustomId('close').setLabel('X').setStyle(ButtonStyle.Danger)
+                );
 
-            const message = await interaction.reply({ embeds: [noteEmbed], components: [row], fetchReply: true });
+                const response = await interaction.reply({ 
+                    embeds: [noteEmbed], 
+                    components: [row], 
+                    withResponse: true
+                });
 
-            const collector = message.createMessageComponentCollector({ time: 60000 });
+                const message = await interaction.fetchReply();
 
-            collector.on('collect', async (btn) => {
-                if (btn.user.id !== interaction.user.id) return btn.reply({ content: 'You cannot use this button.', ephemeral: true });
+                const collector = message.createMessageComponentCollector({ time: 60000 });
 
-                if (btn.customId === 'close') {
-                    // Delete the message.
-                    await btn.message.delete();
+                collector.on('collect', async (btn) => {
+                    if (btn.user.id !== interaction.user.id) return btn.reply({ 
+                        content: 'You cannot use this button.', 
+                        flags: MessageFlags.Ephemeral 
+                    });
 
-                    // await btn.update({ embeds: [], components: [] });
-                    return collector.stop();
-                }
-            })
+                    if (btn.customId === 'close') {
+                        // Delete the message.
+                        await btn.message.delete();
+
+                        // await btn.update({ embeds: [], components: [] });
+                        return collector.stop();
+                    }
+                })
+            }
         }
 
         if (subcommand === 'add') {
@@ -157,16 +226,47 @@ module.exports = {
             const content = interaction.options.getString('content');
 
             await pool.query('INSERT INTO dcb_notes (user_id, title, content) VALUES (?, ?, ?)', [interaction.user.id, title, content]);
-            await interaction.reply(`Note added: **${title}**`);
+            
+            const embed = new EmbedBuilder()
+                .setTitle(':white_check_mark: Note added')
+                .setDescription(`Successfully added note: **${title}**`)
+                .setColor(process.env.COLOR_GREEN)
+                .setFooter({ text: process.env.EMBED_FOOTER })
+                .setTimestamp();
+            
+            await interaction.reply({ 
+                embeds: [embed],
+                flags: ephemeral ? MessageFlags.Ephemeral : undefined
+            });
         }
 
         if (subcommand === 'remove') {
             const noteId = interaction.options.getString('id');
             const result = await pool.query('DELETE FROM dcb_notes WHERE user_id = ? AND id = ?', [interaction.user.id, noteId]);
             if (result.affectedRows > 0) {
-                await interaction.reply(`Note with ID ${noteId} removed.`);
+                const embed = new EmbedBuilder()
+                    .setTitle(':white_check_mark: Note removed')
+                    .setDescription(`Successfully removed note with ID: ${noteId}`)
+                    .setColor(process.env.COLOR_GREEN)
+                    .setFooter({ text: process.env.EMBED_FOOTER })
+                    .setTimestamp();
+
+                await interaction.reply({ 
+                    embeds: [embed],
+                    flags: ephemeral ? MessageFlags.Ephemeral : undefined
+                });
             } else {
-                await interaction.reply(`No note found with ID ${noteId}.`);
+                const embed = new EmbedBuilder()
+                    .setTitle(':x: Note removal failed')
+                    .setDescription(`Failed to remove note with ID: ${noteId}. Note may not exist.`)
+                    .setColor(process.env.COLOR_RED)
+                    .setFooter({ text: process.env.EMBED_FOOTER })
+                    .setTimestamp();
+
+                await interaction.reply({ 
+                    embeds: [embed],
+                    flags: MessageFlags.Ephemeral
+                });
             }
         }
     }
