@@ -1,3 +1,9 @@
+const fs = require('fs');
+const path = require('path');
+
+const logFileDir = path.join(__dirname, '..', 'logs');
+const logFilePath = path.join(logFileDir, 'app.log');
+
 function consoleLog(type, message) {
     const types = ['system', 'info', 'warning', 'error'];
     const timestamp = new Date().toISOString().replace('T', ' ').slice(0, 19);
@@ -26,6 +32,39 @@ function consoleLog(type, message) {
     console.log(consoleLine);
 }
 
+function ensureLogFileExists() {
+    if (!fs.existsSync(logFileDir)) {
+        fs.mkdirSync(logFileDir, { recursive: true });
+    }
+
+    if (!fs.existsSync(logFilePath)) {
+        fs.writeFileSync(logFilePath, '');
+    }
+}
+
+function writeLogToFile(type, message) {
+    ensureLogFileExists();
+
+    const types = ['system', 'info', 'warning', 'error'];
+    const timestamp = new Date().toISOString().replace('T', ' ').slice(0, 19);
+
+    if (!types.includes(type)) {
+        const error = new Error().stack.split('\n')[2].trim();
+        const match = error.match(/\((.*?:\d+:\d+)\)/);
+        const location = match ? match[1] : 'unknown location';
+
+        const errorMessage = `Incorrect log type: "${type}". Allowed types are: ${types.join(', ')}.`;
+        
+        const logLine = `[${timestamp}] [ERROR] at (${location}). ${errorMessage}\n`;
+        fs.appendFileSync(`${logFilePath}`, logLine);
+        return;
+    }
+
+    const logLine = `[${timestamp}] [${type.toUpperCase()}] ${message}\n`;
+    fs.appendFileSync(`${logFilePath}`, logLine);
+}
+
 module.exports = {
-    consoleLog
+    consoleLog,
+    writeLogToFile
 };

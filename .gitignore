@@ -3,5 +3,8 @@
 /.vscode
 .env
 
+# Ignore log files and temporary files
+src/logs/*
+
 # Ignore text files for development
 startup.txt

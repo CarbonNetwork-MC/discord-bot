@@ -1,5 +1,5 @@
 const { Events, ActivityType } = require('discord.js');
-const { consoleLog } = require('../services/logger.js');
+const { consoleLog, writeLogToFile } = require('../services/logger.js');
 
 module.exports = {
     name: Events.ClientReady,
@@ -27,5 +27,6 @@ module.exports = {
 
         consoleLog('system', 'Status has been set!');
         consoleLog('system', `\x1b[32mReady! \x1b[1;36mLogged in as ${client.user.tag}\x1b[0m`);
+        writeLogToFile('system', `Ready! Logged in as ${client.user.tag}`);
     }
 }
