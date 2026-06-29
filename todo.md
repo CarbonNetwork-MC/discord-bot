@@ -39,7 +39,10 @@
 
 ## Commands
 - Replace `prune` with `purge` (see images below)
-- Settings command: See current guild settings and set some of them
+- Kick
+- Warn
+- Nick/unnick
+- Mute/unmute
 
 ![Purge Preview](/docs/images/purge_1.png)
 ![Purge Preview](/docs/images/purge_2.png)
