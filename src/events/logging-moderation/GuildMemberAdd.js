@@ -1,6 +1,6 @@
 const { Events, EmbedBuilder } = require('discord.js');
 
-const { consoleLog } = require('../../services/logger.js');
+const { consoleLog, writeLogToFile } = require('../../services/logger.js');
 const { getModLogChannel, getJoinLogChannel } = require('../../utils/channelUtils.js');
 const { getWelcomeMessage, isWelcomeEnabled } = require('../../config/guild-settings.js');
 
@@ -29,6 +29,7 @@ module.exports = {
             if (modLogChannel) await modLogChannel.send({ embeds: [modLogEmbed] });
         } catch (err) {
             consoleLog('error', `Error sending member join log: ${err}`);
+            writeLogToFile('error', `Error sending member join log: ${err}`);
         }
 
         // Replace placeholders in the welcome message with actual values
@@ -59,6 +60,7 @@ module.exports = {
                 if (joinLogChannel) await joinLogChannel.send({ embeds: [joinLogEmbed] });
             } catch (err) {
                 consoleLog('error', `Error sending member join log: ${err}`);
+                writeLogToFile('error', `Error sending member join log: ${err}`);
             }
         }        
     }

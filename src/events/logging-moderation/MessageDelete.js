@@ -1,6 +1,6 @@
 const { Events, EmbedBuilder, AuditLogEvent } = require('discord.js');
 
-const { consoleLog } = require('../../services/logger.js');
+const { consoleLog, writeLogToFile } = require('../../services/logger.js');
 const { checkModlogChannel, getModLogChannel } = require('../../utils/channelUtils.js');
 const { checkIfBotHasPermission } = require('../../utils/BotPermissions.js');
 
@@ -40,6 +40,7 @@ module.exports = {
                 }
             } catch (err) {
                 consoleLog('error', `Error fetching audit logs for message deletion: ${err}`);
+                writeLogToFile('error', `Error fetching audit logs for message deletion: ${err}`);
             }
         }
 

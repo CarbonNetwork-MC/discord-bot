@@ -1,6 +1,6 @@
 const { Events, EmbedBuilder } = require('discord.js');
 
-const { consoleLog } = require('../../services/logger.js');
+const { consoleLog, writeLogToFile } = require('../../services/logger.js');
 const { getModLogChannel } = require('../../utils/channelUtils.js');
 
 module.exports = {
@@ -24,6 +24,7 @@ module.exports = {
             await logChannel.send({ embeds: [embed] });
         } catch (err) {
             consoleLog('error', `Error sending unban log message: ${err}`);
+            writeLogToFile('error', `Error sending unban log message: ${err}`);
         }
     }
 }

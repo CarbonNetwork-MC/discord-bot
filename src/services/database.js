@@ -1,5 +1,5 @@
 const mysql = require('mysql2/promise');
-const { consoleLog } = require('./logger.js');
+const { consoleLog, writeLogToFile } = require('./logger.js');
 
 let pool;
 
@@ -23,11 +23,13 @@ async function initDbPool(retries = 3, delay = 2000) {
             return pool;
         } catch (err) {
             consoleLog('error', `DB connection failed on attempt ${attempt}: ${err.code || 'UNKNOWN'} - ${err.message || err}`);
+            writeLogToFile('error', `DB connection failed on attempt ${attempt}: ${err.code || 'UNKNOWN'} - ${err.message || err}`);
             if (attempt < retries) await new Promise(res => setTimeout(res, delay));
         }
     }
 
     consoleLog('error', `All ${retries} connection attempts failed. Continuing without DB.`);
+    writeLogToFile('error', `All ${retries} connection attempts failed. Continuing without DB.`);
     return null;
 }
 

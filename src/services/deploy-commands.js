@@ -3,7 +3,7 @@ const { REST, Routes } = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const { consoleLog } = require('./logger.js');
+const { consoleLog, writeLogToFile } = require('./logger.js');
 
 const deployCommands = async (client, clearCommands = false) => {
     const commands = [];
@@ -23,6 +23,7 @@ const deployCommands = async (client, clearCommands = false) => {
                 client.commands.set(command.data.name, command);
             } else {
                 consoleLog('warning', `The command at ${filePath} is missing a required "data" or "execute" property.`)
+                writeLogToFile('warning', `The command at ${filePath} is missing a required "data" or "execute" property.`);
             }
         }
     }
@@ -50,7 +51,8 @@ const deployCommands = async (client, clearCommands = false) => {
 
         consoleLog('system', `Successfully reloaded ${data.length} application (/) commands.`);
     } catch (error) {
-        console.error(error);
+        consoleLog('error', `Error deploying commands: ${error}`);
+        writeLogToFile('error', `Error deploying commands: ${error}`);
     }
 };
 

@@ -1,6 +1,6 @@
 const { Events, EmbedBuilder } = require('discord.js');
 
-const { consoleLog } = require('../../services/logger.js');
+const { consoleLog, writeLogToFile } = require('../../services/logger.js');
 const { getModLogChannel } = require('../../utils/channelUtils.js');
 
 module.exports = {
@@ -38,6 +38,7 @@ module.exports = {
             await modLogChannel.send({ embeds: [embed] });
         } catch (err) {
             consoleLog('error', `Error sending message update log to mod-log channel: ${err}`);
+            writeLogToFile('error', `Error sending message update log to mod-log channel: ${err}`);
         }
     }
 }

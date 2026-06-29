@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 
-const { consoleLog } = require('../services/logger.js');
+const { consoleLog, writeLogToFile } = require('../services/logger.js');
 const { getModLogChannel, getSystemLogChannel } = require('./channelUtils.js');
 const { formatPermissions } = require('./formatPermissions.js');
 
@@ -8,15 +8,18 @@ function checkIfBotHasPermission(guild, permission) {
     const botMember = guild.members.me;
     if (!botMember) {
         consoleLog('error', `Bot is not a member of guild ${guild.id}`);
+        writeLogToFile('error', `Bot is not a member of guild ${guild.id}`);
         return false;
     }
 
     if (!botMember.permissions.has(permission)) {
         consoleLog('warning', `Bot lacks permission '${formatPermissions([permission])}' in guild '${guild.name}' (${guild.id})`);
+        writeLogToFile('warning', `Bot lacks permission '${formatPermissions([permission])}' in guild '${guild.name}' (${guild.id})`);
 
         const channel = getSystemLogChannel(guild) || getModLogChannel(guild);
         if (!channel) {
             consoleLog('warning', `No system log or modlog channel found in guild '${guild.name}' (${guild.id}) to log missing permission '${formatPermissions([permission])}'`);
+            writeLogToFile('warning', `No system log or modlog channel found in guild '${guild.name}' (${guild.id}) to log missing permission '${formatPermissions([permission])}'`);
             return false;
         }
 

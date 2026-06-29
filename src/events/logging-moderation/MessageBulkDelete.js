@@ -1,6 +1,6 @@
 const { Events, EmbedBuilder, AuditLogEvent } = require('discord.js');
 
-const { consoleLog } = require('../../services/logger.js');
+const { consoleLog, writeLogToFile } = require('../../services/logger.js');
 const { getModLogChannel } = require('../../utils/channelUtils.js');
 const { checkIfBotHasPermission } = require('../../utils/BotPermissions.js');
 
@@ -29,6 +29,7 @@ module.exports = {
             await modLogChannel.send({ embeds: [embed] });
         } catch (err) {
             consoleLog('error', `Error sending bulk message deletion log to mod log channel: ${err}`);
+            writeLogToFile('error', `Error sending bulk message deletion log to mod log channel: ${err}`);
         }
     }
 }

@@ -1,6 +1,6 @@
 const { Events, EmbedBuilder, AuditLogEvent } = require('discord.js');
 
-const { consoleLog } = require('../../services/logger.js');
+const { consoleLog, writeLogToFile } = require('../../services/logger.js');
 const { getModLogChannel } = require('../../utils/channelUtils.js');
 const { checkIfBotHasPermission } = require('../../utils/BotPermissions.js');
 
@@ -122,6 +122,7 @@ module.exports = {
                         }
                     } catch (err) {
                         consoleLog('error', `Error fetching audit logs for timeout update: ${err}`);
+                        writeLogToFile('error', `Error fetching audit logs for timeout update: ${err}`);
                     }
                 }
 
@@ -176,6 +177,7 @@ module.exports = {
                 }
             } catch (err) {
                 consoleLog('error', `Error sending member update log to mod-log channel: ${err}`);
+                writeLogToFile('error', `Error sending member update log to mod-log channel: ${err}`);
             }
         }
 

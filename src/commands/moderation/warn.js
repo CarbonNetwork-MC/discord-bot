@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+
 const { getDbPool } = require('../../services/database');
 const punishmentApplier = require('../../utils/punishmentApplier');
 

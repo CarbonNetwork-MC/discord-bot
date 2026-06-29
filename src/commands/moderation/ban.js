@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
 
-const { consoleLog } = require('../../services/logger.js');
+const { consoleLog, writeLogToFile } = require('../../services/logger.js');
 
 function parseDurationToSeconds(input) {
     if (!input) return 0;
@@ -133,6 +133,7 @@ module.exports = {
             });
         } catch (error) {
             consoleLog('error', `Failed to ban ${user.tag}: ${error}`);
+            writeLogToFile('error', `Failed to ban ${user.tag}: ${error}`);
             
             const embed = new EmbedBuilder()
                 .setTitle(':x: Ban failed')

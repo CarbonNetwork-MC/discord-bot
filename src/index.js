@@ -7,7 +7,7 @@ require('dotenv').config({
 });
 
 const deployCommands = require('./services/deploy-commands.js');
-const { consoleLog } = require('./services/logger.js');
+const { consoleLog, writeLogToFile } = require('./services/logger.js');
 const { loadGuildSettings } = require('./config/guild-settings.js');
 const database = require('./services/database.js');
 
@@ -46,6 +46,7 @@ for (const folder of commandFolders) {
             client.commands.set(command.data.name, command);
         } else {
 			consoleLog('warning', `The command at ${filePath} is missing a required "data" or "execute" property.`);
+            writeLogToFile('warning', `The command at ${filePath} is missing a required "data" or "execute" property.`);
         }
     }
 }
@@ -76,6 +77,7 @@ for (const filePath of eventFiles) {
             await event.execute(...args);
         } catch (err) {
             consoleLog('error', `Error in event ${event.name}: ${err}`);
+            writeLogToFile('error', `Error in event ${event.name}: ${err}`);
         }
     };
 

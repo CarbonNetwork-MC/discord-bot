@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
 
-const { consoleLog } = require('../../services/logger.js');
+const { consoleLog, writeLogToFile } = require('../../services/logger.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -32,6 +32,7 @@ module.exports = {
             });
         } catch (error) {
             consoleLog('error', `Failed to unban user with ID ${userId}: ${error}`);
+            writeLogToFile('error', `Failed to unban user with ID ${userId}: ${error}`);
 
             const embed = new EmbedBuilder()
                 .setTitle(':x: Unban failed')
