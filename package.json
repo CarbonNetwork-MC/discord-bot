@@ -1,10 +1,17 @@
 {
-  "name": "testbot",
-  "version": "1.0.0",
+  "name": "CarbonNetwork-Bot",
+  "version": "0.2.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "deploy": "node src/bootstrap/deploy-commands.js",
+    "clear-commands": "node src/scripts/clear-commands.js",
+    "clear-commands:global": "node src/scripts/clear-commands.js --global",
+    "clear-commands:dev": "node src/scripts/clear-commands.js --dev",
+    "clear-commands:server-specific": "node src/scripts/clear-commands.js --server-specific",
+    "clear-commands:all": "node src/scripts/clear-commands.js --all"
   },
   "author": "Joxy",
   "license": "ISC",
