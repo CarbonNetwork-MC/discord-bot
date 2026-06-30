@@ -1,6 +1,6 @@
 const fs = require('fs/promises');
 const path = require('path');
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
 
 module.exports = {
 	isDev: false,
@@ -21,6 +21,16 @@ module.exports = {
 			option.setName('title')
 				.setDescription('Optional title for the embed')
 				.setRequired(false)
+		)
+		.addStringOption(option =>
+			option.setName('reply-type')
+				.setDescription('How the bot should reply')
+				.addChoices(
+					{ name: 'Public', value: 'public' },
+					{ name: 'Message', value: 'message' },
+					{ name: 'Private', value: 'ephemeral' }
+				)
+				.setRequired(false)
 		),
 
 	async execute(interaction) {
@@ -38,7 +48,18 @@ module.exports = {
                 .setFooter({ text: '© Carbon Network | 2024 - 2025' })
                 .setTimestamp();
 
-			await interaction.reply({ embeds: [embed] });
+			const replyType = interaction.options.getString('reply-type') || 'public';
+			if (replyType !== 'message') {
+				const replyOptions = { embeds: [embed] };
+				if (replyType === 'ephemeral') {
+					replyOptions.flags = MessageFlags.Ephemeral;
+				}
+
+				await interaction.reply(replyOptions);
+			} else {
+				await interaction.channel.send({ embeds: [embed] });
+				await interaction.reply({ content: '✅ File content sent to the channel.', flags: MessageFlags.Ephemeral });
+			}
 		} catch (error) {
 			console.error(error);
 			await interaction.reply({
