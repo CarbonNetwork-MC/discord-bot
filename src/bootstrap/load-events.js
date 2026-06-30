@@ -21,6 +21,8 @@ function loadEvents(client) {
     const eventsPath = path.join(__dirname, '../events');
     const eventFiles = getFiles(eventsPath);
 
+    let loadedEventCount = 0;
+
     for (const filePath of eventFiles) {
         const event = require(filePath);
 
@@ -47,9 +49,10 @@ function loadEvents(client) {
 
         // # Debugging: Log the loaded event handler
         // consoleLog('system', `Loaded event handler: ${event.name} from ${filePath}`);
+        loadedEventCount++;
     }
 
-    consoleLog('system', `Successfully loaded ${eventFiles.length} event handlers.`);
+    consoleLog('system', `Successfully loaded ${loadedEventCount} event handlers.`);
 }
 
 module.exports = { loadEvents };

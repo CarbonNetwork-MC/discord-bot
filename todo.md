@@ -24,9 +24,9 @@
 | **8** | 1 | GuildBanRemove |  | ✓ |
 | **9** | 2 | GuildRoleCreate |  | ✓ |
 | **10** | 2 | GuildRoleDelete |  | ✓ |
-| **11** | 2 | GuildRoleUpdate |  |  |
-| **12** | 2 | InviteCreate |  |  |
-| **13** | 2 | InviteDelete |  |  |
+| **11** | 2 | GuildRoleUpdate |  | ✓ |
+| **12** | 2 | InviteCreate |  | ✓ |
+| **13** | 2 | InviteDelete |  | ✓ |
 | **14** | 3 | ThreadCreate |  |  |
 | **15** | 3 | ThreadDelete |  |  |
 | **16** | 3 | ThreadUpdate |  |  |
