@@ -2,8 +2,7 @@ const { Events, EmbedBuilder, AuditLogEvent } = require('discord.js');
 
 const { consoleLog, writeLogToFile } = require('../../services/logger.js');
 const { getModLogChannel } = require('../../utils/channelUtils.js');
-const { compareOverwrites } = require('../../utils/compareOverwrites.js');
-const { checkIfBotHasPermission } = require('../../utils/BotPermissions.js');
+const { compareChannelOverwrites, checkIfBotHasPermission } = require('../../utils/permissionUtils.js');
 
 const ChannelTypes = require('../../config/enums/ChannelTypeLabels.js');
 
@@ -18,7 +17,7 @@ module.exports = {
         const typeName = ChannelTypes[channel.type] || 'Unknown';
 
         // Role overrides (new channel vs. empty old state)
-        const permChanges = compareOverwrites(
+        const permChanges = compareChannelOverwrites(
             new Map(), // old perms (none for a new channel)
             channel.permissionOverwrites.cache,
             channel.guild

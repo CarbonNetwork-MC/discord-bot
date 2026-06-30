@@ -2,8 +2,7 @@ const { Events, EmbedBuilder, AuditLogEvent } = require('discord.js');
 
 const { consoleLog, writeLogToFile } = require('../../services/logger.js');
 const { getModLogChannel } = require('../../utils/channelUtils.js');
-const { compareOverwrites } = require('../../utils/compareOverwrites.js');
-const { checkIfBotHasPermission } = require('../../utils/BotPermissions.js');
+const { compareChannelOverwrites, checkIfBotHasPermission } = require('../../utils/permissionUtils.js');
 
 module.exports = {
     name: Events.ChannelUpdate,
@@ -72,7 +71,7 @@ module.exports = {
         }
 
         // Permission changes
-        const permChanges = compareOverwrites(
+        const permChanges = compareChannelOverwrites(
             oldChannel.permissionOverwrites.cache,
             newChannel.permissionOverwrites.cache,
             newChannel.guild

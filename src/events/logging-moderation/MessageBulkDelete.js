@@ -2,7 +2,7 @@ const { Events, EmbedBuilder, AuditLogEvent } = require('discord.js');
 
 const { consoleLog, writeLogToFile } = require('../../services/logger.js');
 const { getModLogChannel } = require('../../utils/channelUtils.js');
-const { checkIfBotHasPermission } = require('../../utils/BotPermissions.js');
+const { checkIfBotHasPermission } = require('../../utils/permissionUtils.js');
 
 module.exports = {
     name: Events.MessageBulkDelete,
