@@ -22,9 +22,9 @@
 | **6** | 1 | GuildMemberUpdate |  | ✓ |
 | **7** | 1 | GuildBanAdd |  | ✓ |
 | **8** | 1 | GuildBanRemove |  | ✓ |
-| **9** | 2 | RoleCreate |  |  |
-| **10** | 2 | RoleDelete |  |  |
-| **11** | 2 | RoleUpdate |  |  |
+| **9** | 2 | GuildRoleCreate |  | ✓ |
+| **10** | 2 | GuildRoleDelete |  | ✓ |
+| **11** | 2 | GuildRoleUpdate |  |  |
 | **12** | 2 | InviteCreate |  |  |
 | **13** | 2 | InviteDelete |  |  |
 | **14** | 3 | ThreadCreate |  |  |

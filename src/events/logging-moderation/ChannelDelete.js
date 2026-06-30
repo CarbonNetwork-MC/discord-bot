@@ -51,6 +51,11 @@ module.exports = {
             .setFooter({ text: process.env.EMBED_FOOTER })
             .setTimestamp();
 
-        logChannel.send({ embeds: [embed] });
+        try {
+            await logChannel.send({ embeds: [embed] });
+        } catch (err) {
+            consoleLog('error', `Error sending channel deletion log: ${err}`);
+            writeLogToFile('error', `Error sending channel deletion log: ${err}`);
+        }
     }
 }
