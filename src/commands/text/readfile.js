@@ -45,7 +45,7 @@ module.exports = {
 				.setTitle(title || '📄 File Content')
 				.setDescription(fileContent.length > 4096 ? fileContent.slice(0, 4093) + '...' : fileContent)
 				.setColor('#3896fc')
-                .setFooter({ text: '© Carbon Network | 2024 - 2025' })
+                .setFooter({ text: process.env.EMBED_FOOTER || '' })
                 .setTimestamp();
 
 			const replyType = interaction.options.getString('reply-type') || 'public';
