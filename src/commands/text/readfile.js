@@ -64,7 +64,7 @@ module.exports = {
 			console.error(error);
 			await interaction.reply({
 				content: `❌ Failed to read file at \`${inputPath}\`. Make sure the path is correct.`,
-				ephemeral: true,
+				flags: MessageFlags.Ephemeral,
 			});
 		}
 	}
