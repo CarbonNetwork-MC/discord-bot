@@ -6,5 +6,8 @@
 # Ignore log files and temporary files
 src/logs/*
 
+# Ignore files in the storage directory
+src/storage/*
+
 # Ignore text files for development
 startup.txt
