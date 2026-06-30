@@ -143,7 +143,7 @@ module.exports = {
             const collector = message.createMessageComponentCollector({ time: 60000 });
 
             collector.on('collect', async (btn) => {
-                if (btn.user.id !== interaction.user.id) return btn.reply({ content: 'You cannot use this button.', ephemeral: true });
+                if (btn.user.id !== interaction.user.id) return btn.reply({ content: 'You cannot use this button.', flags: MessageFlags.Ephemeral });
 
                 if (btn.customId === 'prev') page = Math.max(0, page - 1);
                 if (btn.customId === 'next') page = Math.min(totalPages - 1, page + 1);

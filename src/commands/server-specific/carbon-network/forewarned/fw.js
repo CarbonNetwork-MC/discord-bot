@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
 
 module.exports = {
     isDev: false,
@@ -60,21 +60,21 @@ module.exports = {
         if (!isNumeric && !isAlpha) {
             return interaction.reply({
                 content: 'All wards must be **either letters (A–Z)** or **numbers**, not mixed.',
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
 
         if (isNumeric && mode.startsWith('alpha')) {
             return interaction.reply({
                 content: 'Alphabetical sorting cannot be used with numeric wards.',
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
 
         if (isAlpha && mode.startsWith('num')) {
             return interaction.reply({
                 content: 'Numerical sorting cannot be used with letter wards.',
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
 

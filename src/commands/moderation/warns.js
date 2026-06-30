@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, MessageFlags } = require('discord.js');
 
 const { getWarns } = require('../../utils/punishmentApplier');
 
@@ -32,7 +32,7 @@ module.exports = {
             if (rows.length === 0) {
                 embed.setDescription('No warns found for this user.');
                 embed.setColor(process.env.COLOR_GREEN);
-                return interaction.reply({ embeds: [embed], ephemeral: true });
+                return interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
             }
 
             embed.setColor('#FFA500');
@@ -56,7 +56,7 @@ module.exports = {
 
             // Handle button interactions
             collector.on('collect', async (btn) => {
-                if (btn.user.id !== interaction.user.id) return btn.reply({ content: 'You cannot use this button.', ephemeral: true });
+                if (btn.user.id !== interaction.user.id) return btn.reply({ content: 'You cannot use this button.', flags: MessageFlags.Ephemeral });
 
                 if (btn.customId === 'close') {
                     await btn.message.delete();
@@ -66,7 +66,7 @@ module.exports = {
                 const warnId = btn.customId.split('_')[1];
                 const warn = rows.find(w => w.id === parseInt(warnId));
                 if (!warn) {
-                    return btn.reply({ content: 'Warn not found.', ephemeral: true });
+                    return btn.reply({ content: 'Warn not found.', flags: MessageFlags.Ephemeral });
                 }
 
                 const warnEmbed = new EmbedBuilder()
@@ -80,7 +80,7 @@ module.exports = {
             })
         } catch (error) {
             console.error('Error fetching warns:', error);
-            await interaction.reply({ content: 'An error occurred while fetching warns.', ephemeral: true });
+            await interaction.reply({ content: 'An error occurred while fetching warns.', flags: MessageFlags.Ephemeral });
         }
     },
 };

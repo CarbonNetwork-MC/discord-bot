@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
 
 const { getDbPool } = require('../../services/database');
 const punishmentApplier = require('../../utils/punishmentApplier');
@@ -36,7 +36,7 @@ module.exports = {
             let success= await punishmentApplier.addWarn(interaction);
 
             if (!success) {
-                return interaction.reply({ content: 'Failed to add warn.', ephemeral: true });
+                return interaction.reply({ content: 'Failed to add warn.', flags: MessageFlags.Ephemeral });
             }
 
             const user = interaction.options.getUser('user');
@@ -56,7 +56,7 @@ module.exports = {
             await interaction.reply({ embeds: [embed], ephemeral: false });
         } catch (error) {
             console.error('Error executing warn command:', error);
-            await interaction.reply({ content: 'There was an error executing this command.', ephemeral: true });
+            await interaction.reply({ content: 'There was an error executing this command.', flags: MessageFlags.Ephemeral });
         }
     }
 }

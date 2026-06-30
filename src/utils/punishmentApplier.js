@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, MessageFlags } = require('discord.js');
 
 const { getDbPool } = require('../services/database.js');
 const { getGuildSettings } = require('../config/guild-settings.js');
@@ -44,7 +44,7 @@ async function applyMute(interaction) {
         embed.setTitle('Mute Role Not Found')
             .setDescription('Please create a role named "Muted" and assign it the necessary permissions.');
 
-        return interaction.reply({ embeds: [embed], ephemeral: true });
+        return interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
     }
 
     await interaction.guild.members.cache.get(userId).roles.add(muteRole);
@@ -58,7 +58,7 @@ async function applyMute(interaction) {
             { name: 'Muted until', value: new Date(Date.now() + duration * 1000).toLocaleString() }
         );
 
-    return interaction.reply({ embeds: [embed], ephemeral: true });
+    return interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
 }
 
 module.exports = {
