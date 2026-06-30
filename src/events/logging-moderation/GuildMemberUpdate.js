@@ -97,6 +97,15 @@ module.exports = {
                 );
             }
 
+            // Boosting Status
+            if (oldMember.premiumSinceTimestamp !== newMember.premiumSinceTimestamp) {
+                memberChanges.push(
+                    `**Boosting Status**\n` +
+                    `Before: ${oldMember.premiumSinceTimestamp ? `<t:${Math.floor(oldMember.premiumSinceTimestamp / 1000)}:F>` : 'Not Boosting'}\n` +
+                    `After: ${newMember.premiumSinceTimestamp ? `<t:${Math.floor(newMember.premiumSinceTimestamp / 1000)}:F>` : 'Not Boosting'}`
+                );
+            }
+
             // Timeout Changes
             const oldTimeout = oldMember.communicationDisabledUntilTimestamp;
             const newTimeout = newMember.communicationDisabledUntilTimestamp;
