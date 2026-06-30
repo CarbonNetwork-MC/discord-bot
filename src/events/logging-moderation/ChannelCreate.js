@@ -4,7 +4,7 @@ const { consoleLog, writeLogToFile } = require('../../services/logger.js');
 const { getModLogChannel } = require('../../utils/channelUtils.js');
 const { compareChannelOverwrites, checkIfBotHasPermission } = require('../../utils/permissionUtils.js');
 
-const ChannelTypes = require('../../config/enums/ChannelTypeLabels.js');
+const ChannelTypes = require('../../enums/ChannelTypeLabels.js');
 
 module.exports = {
     name: Events.ChannelCreate,
