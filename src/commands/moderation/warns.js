@@ -51,7 +51,13 @@ module.exports = {
             );
 
             // Send the embed with buttons
-            const message = await interaction.reply({ embeds: [embed], components: [row], fetchReply: true });
+            const response = await interaction.reply({ 
+                embeds: [embed], 
+                components: [row], 
+                withResponse: true 
+            });
+            const message = await interaction.fetchReply();
+
             const collector = message.createMessageComponentCollector({ time: 60000 });
 
             // Handle button interactions

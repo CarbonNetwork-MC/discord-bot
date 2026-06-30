@@ -17,11 +17,12 @@ const loadGuildSettings = async () => {
             joinLogId: setting.join_log_id,
             modLogId: setting.mod_log_id,
             systemLogId: setting.system_log_id,
-            muteRoleId: setting.mute_role_id,
             welcomeEnabled: setting.welcome_enabled,
             welcomeMessage: setting.welcome_message,
             leaveEnabled: setting.leave_enabled,
             leaveMessage: setting.leave_message,
+            timeoutDuration1: setting.timeout_duration_1,
+            timeoutDuration2: setting.timeout_duration_2,
         };
     });
 
@@ -42,11 +43,12 @@ const reloadSettingsForGuild = async (guildId) => {
         joinLogId: setting.join_log_id,
         modLogId: setting.mod_log_id,
         systemLogId: setting.system_log_id,
-        muteRoleId: setting.mute_role_id,
         welcomeEnabled: setting.welcome_enabled,
         welcomeMessage: setting.welcome_message,
         leaveEnabled: setting.leave_enabled,
         leaveMessage: setting.leave_message,
+        timeoutDuration1: setting.timeout_duration_1,
+        timeoutDuration2: setting.timeout_duration_2,
     };
 };
 
@@ -66,10 +68,6 @@ function getSystemLogId(guildId) {
     return guildSettings[guildId]?.systemLogId ?? null;
 }
 
-function getMuteRoleId(guildId) {
-    return guildSettings[guildId]?.muteRoleId ?? null;
-}
-
 function isWelcomeEnabled(guildId) {
     return guildSettings[guildId]?.welcomeEnabled ?? false;
 }
@@ -86,6 +84,14 @@ function getLeaveMessage(guildId) {
     return guildSettings[guildId]?.leaveMessage ?? null;
 }
 
+function getTimeoutDuration1(guildId) {
+    return guildSettings[guildId]?.timeoutDuration1 ?? null;
+}
+
+function getTimeoutDuration2(guildId) {
+    return guildSettings[guildId]?.timeoutDuration2 ?? null;
+}
+
 module.exports = {
     loadGuildSettings,
     reloadSettingsForGuild,
@@ -93,9 +99,10 @@ module.exports = {
     getJoinLogId,
     getModLogId,
     getSystemLogId,
-    getMuteRoleId,
     isWelcomeEnabled,
     getWelcomeMessage,
     isLeaveEnabled,
     getLeaveMessage,
+    getTimeoutDuration1,
+    getTimeoutDuration2,
 };
