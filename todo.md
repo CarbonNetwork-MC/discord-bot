@@ -27,15 +27,24 @@
 | **11** | 2 | GuildRoleUpdate |  | ✓ |
 | **12** | 2 | InviteCreate |  | ✓ |
 | **13** | 2 | InviteDelete |  | ✓ |
-| **14** | 3 | UserUpdate |  | ✓ |
+| **14** | 2 | UserUpdate |  | ✓ |
 | **15** | 3 | ThreadCreate |  |  |
 | **16** | 3 | ThreadDelete |  |  |
 | **17** | 3 | ThreadUpdate |  |  |
-| **18** | 3 | GuildEmojisUpdate |  |  |
-| **19** | 3 | GuildStickersUpdate |  |  |
-| **20** | 3 | GuildScheduledEventCreate |  |  |
-| **21** | 3 | GuildScheduledEventDelete |  |  |
-| **22** | 3 | GuildScheduledEventUpdate |  |  |
+| **18** | 3 | GuildEmojiCreate |  |  |
+| **19** | 3 | GuildEmojiDelete |  |  |
+| **20** | 3 | GuildEmojisUpdate |  |  |
+| **21** | 3 | GuildStickerCreate |  |  |
+| **22** | 3 | GuildStickerDelete |  |  |
+| **23** | 3 | GuildStickerUpdate |  |  |
+| **24** | 3 | GuildScheduledEventCreate |  |  |
+| **25** | 3 | GuildScheduledEventDelete |  |  |
+| **26** | 3 | GuildScheduledEventUpdate |  |  |
+| **27** | 3 | GuildScheduledEventUserAdd |  |  |
+| **28** | 3 | GuildScheduledEventUserRemove |  |  |
+| **29** | 3 | GuildSoundboardSoundCreate |  |  |
+| **30** | 3 | GuildSoundboardSoundDelete |  |  |
+| **31** | 3 | GuildSoundboardSoundUpdate |  |  |
 
 ## Commands
 - Replace `prune` with `purge` (see images below)
