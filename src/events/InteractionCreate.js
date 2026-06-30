@@ -51,7 +51,7 @@ module.exports = {
 
             if (missingPermissions.length > 0) {
                 return interaction.reply({
-                    content: `You do not have the required permissions to use this command. Missing permissions: ${missingPermissions.join(', ')}`,
+                    content: `You do not have the required permissions to use this command. Missing permissions: **${missingPermissions.join(', ')}**`,
                     flags: MessageFlags.Ephemeral,
                 });
             }
