@@ -3,7 +3,7 @@ const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Embed
 const { getWarns } = require('../../utils/punishmentApplier');
 
 module.exports = {
-    isDev: true,
+    isDev: false,
     servers: null,
     allowedUsers: null,
     requiredPermissions: [

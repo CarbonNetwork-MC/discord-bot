@@ -6,7 +6,7 @@ const punishmentApplier = require('../../utils/punishmentApplier');
 const { getModLogChannel } = require('../../utils/channelUtils');
 
 module.exports = {
-    isDev: true,
+    isDev: false,
     servers: null,
     allowedUsers: null,
     requiredPermissions: [
