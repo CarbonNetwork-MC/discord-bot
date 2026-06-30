@@ -27,15 +27,15 @@
 | **11** | 2 | GuildRoleUpdate |  | ✓ |
 | **12** | 2 | InviteCreate |  | ✓ |
 | **13** | 2 | InviteDelete |  | ✓ |
-| **14** | 3 | ThreadCreate |  |  |
-| **15** | 3 | ThreadDelete |  |  |
-| **16** | 3 | ThreadUpdate |  |  |
-| **17** | 3 | GuildEmojisUpdate |  |  |
-| **18** | 3 | GuildStickersUpdate |  |  |
-| **19** | 3 | GuildScheduledEventCreate |  |  |
-| **20** | 3 | GuildScheduledEventDelete |  |  |
-| **21** | 3 | GuildScheduledEventUpdate |  |  |
-| **22** | 4 | UserUpdate |  |  |
+| **14** | 3 | UserUpdate |  | ✓ |
+| **15** | 3 | ThreadCreate |  |  |
+| **16** | 3 | ThreadDelete |  |  |
+| **17** | 3 | ThreadUpdate |  |  |
+| **18** | 3 | GuildEmojisUpdate |  |  |
+| **19** | 3 | GuildStickersUpdate |  |  |
+| **20** | 3 | GuildScheduledEventCreate |  |  |
+| **21** | 3 | GuildScheduledEventDelete |  |  |
+| **22** | 3 | GuildScheduledEventUpdate |  |  |
 
 ## Commands
 - Replace `prune` with `purge` (see images below)
