@@ -1,6 +1,8 @@
 const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
+    isDev: false,
+    servers: null,
     data: new SlashCommandBuilder()
         .setName('wheel')
         .setDescription('Spins the wheel and returns a random result'),

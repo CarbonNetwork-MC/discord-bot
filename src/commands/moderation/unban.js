@@ -3,6 +3,8 @@ const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js'
 const { consoleLog, writeLogToFile } = require('../../services/logger.js');
 
 module.exports = {
+    isDev: false,
+    servers: null,
     data: new SlashCommandBuilder()
         .setName('unban')
         .setDescription('Unbans a user from the server')

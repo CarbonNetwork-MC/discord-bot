@@ -1,6 +1,8 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
+    isDev: false,
+    servers: null,
     data: new SlashCommandBuilder()
         .setName('length')
         .setDescription('Get the length of a text string')

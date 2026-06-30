@@ -3,6 +3,8 @@ const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Embed
 const db = require('../../services/database.js');
 
 module.exports = {
+    isDev: false,
+    servers: null,
     data: new SlashCommandBuilder()
         .setName('notes')
         .setDescription('Manage your personal notes')

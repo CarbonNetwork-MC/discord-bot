@@ -2,6 +2,8 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const math = require('mathjs');
 
 module.exports = {
+    isDev: false,
+    servers: null,
     data: new SlashCommandBuilder()
         .setName('math')
         .setDescription('Calculate things.')

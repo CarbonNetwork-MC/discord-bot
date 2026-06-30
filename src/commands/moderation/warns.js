@@ -3,6 +3,8 @@ const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Embed
 const { getWarns } = require('../../utils/punishmentApplier');
 
 module.exports = {
+    isDev: false,
+    servers: null,
     data: new SlashCommandBuilder()
         .setName('warns')
         .setDescription('View all warns for a user')

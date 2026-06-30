@@ -49,3 +49,13 @@
 
 ## Other
 - Add a 'isDev' parameter to all commands, when the bot is in development these commands will only deploy to the development server and not globally. Also only developers will be able to execute these commands.
+
+## How commands should be deployed
+| Command | Development | Production |
+| ----- | ----- | ----- |
+| `isDev: true` & `servers: null` | Dev Server | Dev Server |
+| `isDev: false` & `servers: null` | Both | Both |
+| `isDev: true` & `servers: ['Dev_id']` | Dev Server | Not deployed |
+| `isDev: true` & `servers: ['Dev_id', 'Server_A']` | Dev Server | Dev Server |
+| `isDev: false` & `servers: ['Dev_id', 'Server_A']` | Dev Server | All servers in the servers array |
+| `isDev` & `servers` missing | Not deployed + warning | Not deployed + warning |

@@ -3,6 +3,8 @@ const path = require('path');
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
+	isDev: false,
+    servers: null,
 	data: new SlashCommandBuilder()
 		.setName('readfile')
 		.setDescription('Reads a text file and sends it as an embed.')

@@ -43,6 +43,8 @@ function parseDurationToSeconds(input) {
 }
 
 module.exports = {
+    isDev: false,
+    servers: null,
     data: new SlashCommandBuilder()
         .setName('ban')
         .setDescription('Bans a user from the server')

@@ -2,6 +2,8 @@ const { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } = require('discor
 const path = require('path');
 
 module.exports = {
+    isDev: false,
+    servers: null,
     data: new SlashCommandBuilder()
         .setName('letters')
         .setDescription('Get the letter combinations for Forewarned'),

@@ -4,6 +4,8 @@ const { getDbPool } = require('../../services/database');
 const { getGuildSettings, reloadSettingsForGuild } = require('../../config/guild-settings');
 
 module.exports = {
+    isDev: false,
+    servers: null,
     data: new SlashCommandBuilder()
         .setName('settings')
         .setDescription('View or change server settings')

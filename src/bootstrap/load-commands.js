@@ -21,7 +21,7 @@ function loadCommands(client) {
     const commandsPath = path.join(__dirname, '../commands');
     const commandFiles = getCommandFiles(commandsPath);
 
-    const commandJson = [];
+    const commands = [];
 
     for (const filePath of commandFiles) {
         const command = require(filePath);
@@ -33,12 +33,12 @@ function loadCommands(client) {
         }
 
         client.commands.set(command.data.name, command);
-        commandJson.push(command.data.toJSON());
+        commands.push(command);
     }
 
     consoleLog('system', `Successfully loaded ${client.commands.size} commands.`);
 
-    return commandJson;
+    return commands;
 }
 
 module.exports = { loadCommands };
