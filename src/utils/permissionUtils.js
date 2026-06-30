@@ -69,7 +69,7 @@ function compareRolePermissions(oldRole, newRole) {
         }
     });
 
-    return changes.join('\n') || null;
+    return changes;
 }
 
 function checkIfBotHasPermission(guild, permission) {
