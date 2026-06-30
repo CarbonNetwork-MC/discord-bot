@@ -10,6 +10,9 @@
 - Commands (See [Commands](#commands))
 - Sticky Roles
 - Chat filter?
+- Ticket system
+- Leveling system?
+- Servers Stats (toggleable)
 
 ## Events
 | **#** | **Priority** | **Event** | **Joinlog** | **Done** |
@@ -52,6 +55,12 @@
 - Nick/unnick
 - Mute/unmute
 - Lockdown
+- Massrole
+- Role add/remove <user> <role>
+- Coinflip
+- Random (string, number)
+- Poll
+- Remindme
 
 ![Purge Preview](/docs/images/purge_1.png)
 ![Purge Preview](/docs/images/purge_2.png)
