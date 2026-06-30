@@ -17,7 +17,7 @@ function getCommandFiles(dir) {
     });
 }
 
-function loadCommands(client) {
+function loadCommands(client, systemMessage = true) {
     const commandsPath = path.join(__dirname, '../commands');
     const commandFiles = getCommandFiles(commandsPath);
 
@@ -36,7 +36,9 @@ function loadCommands(client) {
         commands.push(command);
     }
 
-    consoleLog('system', `Successfully loaded ${client.commands.size} commands.`);
+    if (systemMessage) {
+        consoleLog('system', `Successfully loaded ${client.commands.size} commands.`);
+    }
 
     return commands;
 }

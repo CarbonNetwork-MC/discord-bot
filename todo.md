@@ -54,8 +54,8 @@
 | Command | Development | Production |
 | ----- | ----- | ----- |
 | `isDev: true` & `servers: null` | Dev Server | Dev Server |
-| `isDev: false` & `servers: null` | Both | Both |
-| `isDev: true` & `servers: ['Dev_id']` | Dev Server | Not deployed |
+| `isDev: false` & `servers: null` | Dev Server | Global |
+| `isDev: true` & `servers: ['Dev_id']` | Dev Server | Dev Server |
 | `isDev: true` & `servers: ['Dev_id', 'Server_A']` | Dev Server | Dev Server |
 | `isDev: false` & `servers: ['Dev_id', 'Server_A']` | Dev Server | All servers in the servers array |
 | `isDev: false` & `servers: ['Server_A']` | Not deployed | All servers in the servers array |
