@@ -46,3 +46,6 @@
 
 ![Purge Preview](/docs/images/purge_1.png)
 ![Purge Preview](/docs/images/purge_2.png)
+
+## Other
+- Add a 'isDev' parameter to all commands, when the bot is in development these commands will only deploy to the development server and not globally. Also only developers will be able to execute these commands.

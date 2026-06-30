@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "deploy": "node src/services/deploy-commands.js"
+    "deploy": "node src/bootstrap/deploy-commands.js",
+    "clear-commands:global": "node src/scripts/clear-global-commands.js",
+    "clear-commands:dev": "node src/scripts/clear-guild-commands.js"
   },
   "author": "Joxy",
   "license": "ISC",

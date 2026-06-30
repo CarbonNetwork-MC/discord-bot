@@ -31,3 +31,11 @@ bootstrap(client).catch(error => {
     console.error('Error during bot bootstrap:', error);
     process.exit(1);
 })
+
+process.on('unhandledRejection', error => {
+    console.error('Unhandled Rejection:', error);
+
+    if (error?.code === 50013) {
+        console.log('Missing Permissions');
+    }
+});
