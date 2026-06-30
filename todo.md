@@ -58,4 +58,5 @@
 | `isDev: true` & `servers: ['Dev_id']` | Dev Server | Not deployed |
 | `isDev: true` & `servers: ['Dev_id', 'Server_A']` | Dev Server | Dev Server |
 | `isDev: false` & `servers: ['Dev_id', 'Server_A']` | Dev Server | All servers in the servers array |
+| `isDev: false` & `servers: ['Server_A']` | Not deployed | All servers in the servers array |
 | `isDev` & `servers` missing | Not deployed + warning | Not deployed + warning |

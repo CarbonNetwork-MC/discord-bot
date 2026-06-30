@@ -4,7 +4,9 @@ module.exports = {
     isDev: false,
     servers: null,
     allowedUsers: null,
-    requiredPermissions: null,
+    requiredPermissions: [
+        'KickMembers'
+    ],
     data: new SlashCommandBuilder()
         .setName('kick')
         .setDescription('Kicks a user from the server')

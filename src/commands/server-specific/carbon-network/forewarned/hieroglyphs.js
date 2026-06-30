@@ -38,7 +38,9 @@ const hieroglyphs = {
 
 module.exports = {
     isDev: false,
-    servers: null,
+    servers: [
+        '1203116259693301830', // Carbon Network
+    ],
     allowedUsers: null,
     requiredPermissions: null,
     data: new SlashCommandBuilder()

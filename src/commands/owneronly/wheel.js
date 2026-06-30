@@ -3,7 +3,9 @@ const { SlashCommandBuilder } = require('discord.js');
 module.exports = {
     isDev: false,
     servers: null,
-    allowedUsers: null,
+    allowedUsers: [
+        process.env.OWNER_ID,
+    ],
     requiredPermissions: null,
     data: new SlashCommandBuilder()
         .setName('wheel')

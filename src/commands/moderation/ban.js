@@ -46,7 +46,9 @@ module.exports = {
     isDev: false,
     servers: null,
     allowedUsers: null,
-    requiredPermissions: ['BanMembers'],
+    requiredPermissions: [
+        'BanMembers'
+    ],
     data: new SlashCommandBuilder()
         .setName('ban')
         .setDescription('Bans a user from the server')

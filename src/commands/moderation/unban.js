@@ -6,7 +6,9 @@ module.exports = {
     isDev: false,
     servers: null,
     allowedUsers: null,
-    requiredPermissions: null,
+    requiredPermissions: [
+        'BanMembers',
+    ],
     data: new SlashCommandBuilder()
         .setName('unban')
         .setDescription('Unbans a user from the server')

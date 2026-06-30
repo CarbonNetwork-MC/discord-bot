@@ -7,7 +7,9 @@ module.exports = {
     isDev: false,
     servers: null,
     allowedUsers: null,
-    requiredPermissions: null,
+    requiredPermissions: [
+        'ManageGuild',
+    ],
     data: new SlashCommandBuilder()
         .setName('settings')
         .setDescription('View or change server settings')

@@ -5,7 +5,9 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 module.exports = {
 	isDev: false,
     servers: null,
-    allowedUsers: null,
+    allowedUsers: [
+		'114364015307653126',
+	],
     requiredPermissions: null,
 	data: new SlashCommandBuilder()
 		.setName('readfile')

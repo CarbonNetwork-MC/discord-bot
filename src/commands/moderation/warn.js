@@ -4,10 +4,13 @@ const { getDbPool } = require('../../services/database');
 const punishmentApplier = require('../../utils/punishmentApplier');
 
 module.exports = {
-    isDev: false,
+    isDev: true,
     servers: null,
     allowedUsers: null,
-    requiredPermissions: null,
+    requiredPermissions: [
+        'KickMembers',
+        'ModerateMembers',
+    ],
     data: new SlashCommandBuilder()
         .setName('warn')
         .setDescription('Warn a user')  
