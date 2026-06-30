@@ -5,7 +5,7 @@ const { getModLogChannel } = require('../../utils/channelUtils.js');
 const { checkIfBotHasPermission } = require('../../utils/permissionUtils.js');
 
 const memberUpdateCooldowns = new Map();
-const MEMBER_UPDATE_DELAY = 1500;
+const MEMBER_UPDATE_DELAY = 2000;
 
 module.exports = {
     name: Events.GuildMemberUpdate,
