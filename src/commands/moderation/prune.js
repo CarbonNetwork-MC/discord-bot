@@ -3,6 +3,8 @@ const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 module.exports = {
     isDev: false,
     servers: null,
+    allowedUsers: null,
+    requiredPermissions: null,
 	data: new SlashCommandBuilder()
 		.setName('prune')
 		.setDescription('Prune a number of messages')

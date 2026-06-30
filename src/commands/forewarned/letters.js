@@ -4,6 +4,8 @@ const path = require('path');
 module.exports = {
     isDev: false,
     servers: null,
+    allowedUsers: null,
+    requiredPermissions: null,
     data: new SlashCommandBuilder()
         .setName('letters')
         .setDescription('Get the letter combinations for Forewarned'),

@@ -3,6 +3,8 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 module.exports = {
     isDev: false,
     servers: null,
+    allowedUsers: null,
+    requiredPermissions: null,
     data: new SlashCommandBuilder()
         .setName('color')
         .setDescription('Generates three random numbers between 0 and 255 to create a random color.'),

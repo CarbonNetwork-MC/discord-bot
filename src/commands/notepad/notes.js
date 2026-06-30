@@ -5,6 +5,8 @@ const db = require('../../services/database.js');
 module.exports = {
     isDev: false,
     servers: null,
+    allowedUsers: null,
+    requiredPermissions: null,
     data: new SlashCommandBuilder()
         .setName('notes')
         .setDescription('Manage your personal notes')

@@ -5,6 +5,8 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 module.exports = {
 	isDev: false,
     servers: null,
+    allowedUsers: null,
+    requiredPermissions: null,
 	data: new SlashCommandBuilder()
 		.setName('readfile')
 		.setDescription('Reads a text file and sends it as an embed.')

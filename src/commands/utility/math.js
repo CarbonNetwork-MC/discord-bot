@@ -4,6 +4,8 @@ const math = require('mathjs');
 module.exports = {
     isDev: false,
     servers: null,
+    allowedUsers: null,
+    requiredPermissions: null,
     data: new SlashCommandBuilder()
         .setName('math')
         .setDescription('Calculate things.')

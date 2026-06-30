@@ -5,6 +5,8 @@ const { getWarns } = require('../../utils/punishmentApplier');
 module.exports = {
     isDev: false,
     servers: null,
+    allowedUsers: null,
+    requiredPermissions: null,
     data: new SlashCommandBuilder()
         .setName('warns')
         .setDescription('View all warns for a user')

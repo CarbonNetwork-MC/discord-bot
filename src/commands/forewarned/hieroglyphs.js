@@ -39,6 +39,8 @@ const hieroglyphs = {
 module.exports = {
     isDev: false,
     servers: null,
+    allowedUsers: null,
+    requiredPermissions: null,
     data: new SlashCommandBuilder()
         .setName('hieroglyphs')
         .setDescription('Translate a message into Forewarned hieroglyphs')

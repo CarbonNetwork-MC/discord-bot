@@ -6,6 +6,8 @@ const punishmentApplier = require('../../utils/punishmentApplier');
 module.exports = {
     isDev: false,
     servers: null,
+    allowedUsers: null,
+    requiredPermissions: null,
     data: new SlashCommandBuilder()
         .setName('warn')
         .setDescription('Warn a user')  

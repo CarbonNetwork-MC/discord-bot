@@ -6,6 +6,8 @@ const { getGuildSettings, reloadSettingsForGuild } = require('../../config/guild
 module.exports = {
     isDev: false,
     servers: null,
+    allowedUsers: null,
+    requiredPermissions: null,
     data: new SlashCommandBuilder()
         .setName('settings')
         .setDescription('View or change server settings')
