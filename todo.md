@@ -53,7 +53,6 @@
 - Replace `prune` with `purge` (see images below)
 - Nick/unnick
 - Mute/unmute
-- Lockdown
 - Massrole
 - Role add/remove <user> <role>
 - Random (string, number)
