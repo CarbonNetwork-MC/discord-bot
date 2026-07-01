@@ -51,7 +51,6 @@
 
 ## Commands
 - Replace `prune` with `purge` (see images below)
-- Kick
 - Nick/unnick
 - Mute/unmute
 - Lockdown
