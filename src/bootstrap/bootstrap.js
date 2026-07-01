@@ -18,7 +18,9 @@ async function bootstrap(client) {
     
     loadEvents(client);
 
-    await deployCommands(commands, process.env.CLEAR_COMMANDS === 'true');
+    if (process.env.DEPLOY_COMMANDS === 'true') {
+        await deployCommands(commands, process.env.CLEAR_COMMANDS === 'true');
+    }
 
     await client.login(process.env.TOKEN);
 
