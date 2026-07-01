@@ -9,8 +9,10 @@ module.exports = {
     once: true,
     execute: (client) => {
         // ! Status
-        const filePath = path.join(__dirname, '../config/statuses.json');
-        const statuses = JSON.parse(fs.readFileSync(filePath, 'utf-8')).map(status => ({
+        const filePath = path.join(__dirname, '../config/status.json');
+        const statusJson = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+        
+        const statuses = statusJson.messages.map(status => ({
             name: status.name,
             type: ActivityType[status.type]
         }));
@@ -23,7 +25,7 @@ module.exports = {
             setInterval(() => {
                 client.user.setPresence({
                     activities: [statuses[index]],
-                    status: 'dnd',
+                    status: statusJson.status,
                 });
 
                 index = (index + 1) % statuses.length;
@@ -31,7 +33,7 @@ module.exports = {
         } else {
             client.user.setPresence({
                 activities: [statuses[0]],
-                status: 'dnd',
+                status: statusJson.status,
             });
         }
 
