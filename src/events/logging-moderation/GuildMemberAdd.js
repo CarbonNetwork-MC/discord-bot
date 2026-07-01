@@ -2,7 +2,7 @@ const { Events, EmbedBuilder } = require('discord.js');
 
 const { consoleLog, writeLogToFile } = require('../../services/logger.js');
 const { getModLogChannel, getJoinLogChannel } = require('../../utils/channelUtils.js');
-const { getWelcomeMessage, isWelcomeEnabled } = require('../../config/guild-settings.js');
+const { getWelcomeMessage, isWelcomeEnabled } = require('../../services/guild-settings.js');
 
 module.exports = {
     name: Events.GuildMemberAdd,

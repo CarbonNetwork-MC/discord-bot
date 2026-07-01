@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
 
 const { consoleLog, writeLogToFile } = require('../../services/logger');
-const { getTimeoutDuration1, getTimeoutDuration2 } = require('../../config/guild-settings');
+const { getTimeoutDuration1, getTimeoutDuration2 } = require('../../services/guild-settings');
 const punishmentApplier = require('../../utils/punishmentApplier');
 const { getModLogChannel } = require('../../utils/channelUtils');
 

@@ -2,7 +2,7 @@ const database = require('../services/database.js');
 const deployCommands = require('./deploy-commands.js');
 const { loadCommands } = require('./load-commands.js');
 const { loadEvents } = require('./load-events.js');
-const { loadGuildSettings } = require('../config/guild-settings.js');
+const { loadGuildSettings } = require('../services/guild-settings.js');
 const { consoleLog, writeLogToFile } = require('../services/logger.js');
 
 async function bootstrap(client) {
@@ -15,7 +15,7 @@ async function bootstrap(client) {
     }
 
     const commands = loadCommands(client);
-
+    
     loadEvents(client);
 
     await deployCommands(commands, process.env.CLEAR_COMMANDS === 'true');

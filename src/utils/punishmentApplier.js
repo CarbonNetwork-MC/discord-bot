@@ -2,7 +2,7 @@ const { EmbedBuilder, MessageFlags } = require('discord.js');
 
 const { getModLogChannel } = require('./channelUtils.js');
 const { formatTime } = require('./timeFormatter');
-const { getGuildSettings } = require('../config/guild-settings.js');
+const { getGuildSettings } = require('../services/guild-settings.js');
 const { getDbPool } = require('../services/database.js');
 const { consoleLog, writeLogToFile } = require('../services/logger.js');
 

@@ -6,7 +6,7 @@ require('dotenv').config({
 });
 
 const { loadCommands } = require('../bootstrap/load-commands.js');
-const { getCommandTargets } = require('../config/get-command-targets.js');
+const { getCommandTargets } = require('../utils/get-command-targets.js');
 
 const args = process.argv.slice(2);
 

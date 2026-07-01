@@ -2,7 +2,7 @@ const { Events, EmbedBuilder } = require('discord.js');
 
 const { consoleLog, writeLogToFile } = require('../../services/logger.js');
 const { getModLogChannel, getJoinLogChannel } = require('../../utils/channelUtils.js');
-const { getLeaveMessage, isLeaveEnabled } = require('../../config/guild-settings.js');
+const { getLeaveMessage, isLeaveEnabled } = require('../../services/guild-settings.js');
 
 module.exports = {
     name: Events.GuildMemberRemove,

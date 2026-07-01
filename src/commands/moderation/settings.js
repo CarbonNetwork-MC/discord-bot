@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder, MessageFlags, PermissionsBitField } = require('discord.js');
 
 const { getDbPool } = require('../../services/database');
-const { getGuildSettings, reloadSettingsForGuild } = require('../../config/guild-settings');
+const { getGuildSettings, reloadSettingsForGuild } = require('../../services/guild-settings');
 
 module.exports = {
     isDev: false,
