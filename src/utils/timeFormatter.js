@@ -9,6 +9,11 @@ function formatTime(seconds) {
     return `${days}d ${hours}h ${minutes}m ${seconds}s`;
 }
 
+function formatTimeDifference(milliseconds) {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    return formatTime(totalSeconds);
+}
+
 function parseDurationToSeconds(input) {
     if (!input) return 0;
 
@@ -51,5 +56,6 @@ function parseDurationToSeconds(input) {
 
 module.exports = {
     formatTime,
+    formatTimeDifference,
     parseDurationToSeconds
 };

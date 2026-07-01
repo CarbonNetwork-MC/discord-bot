@@ -34,7 +34,7 @@ module.exports = {
         });
         const message = await interaction.fetchReply();
 
-        const collector = message.createMessageComponentCollector({ time: 10000 });
+        const collector = message.createMessageComponentCollector({ time: 60000 });
 
         collector.on('collect', async (btn) => {
             if (btn.customId === 'flip_again') {

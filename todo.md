@@ -52,12 +52,15 @@
 ## Commands
 - Replace `prune` with `purge` (see images below)
 - Nick/unnick
-- Mute/unmute
+- timeout/remove
 - Massrole
 - Role add/remove <user> <role>
-- Random (string, number)
 - Poll
-- Remindme
+- Remindme / reminder
+- voicemute
+- voicedeafen
+- voicemove
+- replace
 
 ![Purge Preview](/docs/images/purge_1.png)
 ![Purge Preview](/docs/images/purge_2.png)
