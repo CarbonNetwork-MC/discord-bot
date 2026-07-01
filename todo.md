@@ -56,7 +56,6 @@
 - Lockdown
 - Massrole
 - Role add/remove <user> <role>
-- Coinflip
 - Random (string, number)
 - Poll
 - Remindme
