@@ -1,4 +1,7 @@
 const { Events, ActivityType } = require('discord.js');
+const fs = require('fs');
+const path = require('path');
+
 const { consoleLog, writeLogToFile } = require('../services/logger.js');
 
 module.exports = {
@@ -6,24 +9,31 @@ module.exports = {
     once: true,
     execute: (client) => {
         // ! Status
-        const statuses = [
-            { name: 'Listening to Joxy', type: ActivityType.Listening },
-            { name: 'Watching you', type: ActivityType.Watching },
-            { name: 'Playing Minecraft', type: ActivityType.Playing }
-        ];
+        const filePath = path.join(__dirname, '../config/statuses.json');
+        const statuses = JSON.parse(fs.readFileSync(filePath, 'utf-8')).map(status => ({
+            name: status.name,
+            type: ActivityType[status.type]
+        }));
 
         let index = 0;
         let interval = 60; // Interval in seconds
 
         // Set the status
-        setInterval(() => {
+        if (statuses.length > 1) {
+            setInterval(() => {
+                client.user.setPresence({
+                    activities: [statuses[index]],
+                    status: 'dnd',
+                });
+
+                index = (index + 1) % statuses.length;
+            }, 1000 * interval);
+        } else {
             client.user.setPresence({
-                activities: [statuses[index]],
+                activities: [statuses[0]],
                 status: 'dnd',
             });
-
-            index = (index + 1) % statuses.length;
-        }, 1000 * interval);
+        }
 
         consoleLog('system', 'Status has been set!');
         consoleLog('system', `\x1b[32mReady! \x1b[1;36mLogged in as ${client.user.tag}\x1b[0m`);
