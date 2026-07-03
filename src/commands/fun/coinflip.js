@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 const coinSides = ['Heads', 'Tails'];
 
@@ -41,7 +41,7 @@ module.exports = {
                 if (btn.user.id !== interaction.user.id) {
                     await btn.reply({ 
                         content: "You can't flip the coin for someone else!", 
-                        ephemeral: true 
+                        flags: MessageFlags.Ephemeral
                     });
                     return;
                 }
