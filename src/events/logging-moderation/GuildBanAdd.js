@@ -11,6 +11,11 @@ module.exports = {
         const logChannel = getModLogChannel(ban.guild);
         if (!logChannel) return;
 
+        // Check if the event is loaded in the logging settings for this guild
+        const client = ban.client;
+        const loggingSettings = client.loggingSettings.get(ban.guild.id);
+        if (!loggingSettings || !loggingSettings.GuildBanAdd) return;
+
         let reason = 'No reason provided';
         let bannedBy = 'Unknown';
         let deletedMessages = '0 seconds';

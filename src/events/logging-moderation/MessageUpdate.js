@@ -9,6 +9,11 @@ module.exports = {
     execute: async (oldMessage, newMessage) => {
         if (!oldMessage.guild || !oldMessage.author) return;
 
+        // Check if the event is loaded in the logging settings for this guild
+        const client = newMessage.client;
+        const loggingSettings = client.loggingSettings.get(newMessage.guild.id);
+        if (!loggingSettings || !loggingSettings.MessageUpdate) return;
+
         const modLogChannel = getModLogChannel(oldMessage.guild);
         if (!modLogChannel) return;
 

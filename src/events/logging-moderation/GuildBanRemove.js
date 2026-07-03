@@ -10,6 +10,11 @@ module.exports = {
         const logChannel = getModLogChannel(ban.guild);
         if (!logChannel) return;
 
+        // Check if the event is loaded in the logging settings for this guild
+        const client = ban.client;
+        const loggingSettings = client.loggingSettings.get(ban.guild.id);
+        if (!loggingSettings || !loggingSettings.GuildBanRemove) return;
+
         const embed = new EmbedBuilder()
             .setTitle(':white_check_mark: User unbanned')
             .setDescription(

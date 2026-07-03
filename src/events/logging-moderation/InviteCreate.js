@@ -11,6 +11,11 @@ module.exports = {
         const logChannel = getModLogChannel(invite.guild);
         if (!logChannel) return;
 
+        // Check if the event is loaded in the logging settings for this guild
+        const client = invite.client;
+        const loggingSettings = client.loggingSettings.get(invite.guild.id);
+        if (!loggingSettings || !loggingSettings.InviteCreate) return;
+
         let createdBy = 'Unknown';
         let roles = 'None';
 

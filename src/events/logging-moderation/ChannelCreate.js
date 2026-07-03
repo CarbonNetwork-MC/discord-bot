@@ -13,6 +13,11 @@ module.exports = {
         const logChannel = getModLogChannel(channel.guild);
         if (!logChannel) return;
 
+        // Check if the event is loaded in the logging settings for this guild
+        const client = channel.client;
+        const loggingSettings = client.loggingSettings.get(channel.guild.id);
+        if (!loggingSettings || !loggingSettings.ChannelCreate) return;
+
         // Format channel type
         const typeName = ChannelTypes[channel.type] || 'Unknown';
 

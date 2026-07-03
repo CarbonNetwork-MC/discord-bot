@@ -13,6 +13,11 @@ module.exports = {
         const logChannel = getModLogChannel(channel.guild);
         if (!logChannel) return;
 
+        // Check if the event is loaded in the logging settings for this guild
+        const client = channel.client;
+        const loggingSettings = client.loggingSettings.get(channel.guild.id);
+        if (!loggingSettings || !loggingSettings.ChannelDelete) return;
+
         let deletedBy = 'Unknown';
 
         // Check if the bot has permission to view the audit logs

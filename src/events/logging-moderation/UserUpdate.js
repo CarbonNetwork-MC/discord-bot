@@ -8,6 +8,11 @@ module.exports = {
     name: Events.UserUpdate,
     once: false,
     execute: async (oldUser, newUser) => {
+        // Check if the event is loaded in the logging settings for this guild
+        const client = newUser.client;
+        const loggingSettings = client.loggingSettings.get(newUser.id);
+        if (!loggingSettings || !loggingSettings.UserUpdate) return;
+
         const userChanges = [];
 
         if (oldUser.username !== newUser.username) {

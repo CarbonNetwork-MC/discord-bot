@@ -14,6 +14,11 @@ module.exports = {
         const logChannel = getModLogChannel(newRole.guild);
         if (!logChannel) return;
 
+        // Check if the event is loaded in the logging settings for this guild
+        const client = newRole.client;
+        const loggingSettings = client.loggingSettings.get(newRole.guild.id);
+        if (!loggingSettings || !loggingSettings.GuildRoleUpdate) return;
+
         const key = `${newRole.guild.id}:${newRole.id}`;
         const existing = roleUpdateCooldowns.get(key);
 

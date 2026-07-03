@@ -14,6 +14,11 @@ module.exports = {
         const logChannel = getModLogChannel(newChannel.guild);
         if (!logChannel) return;
 
+        // Check if the event is loaded in the logging settings for this guild
+        const client = newChannel.client;
+        const loggingSettings = client.loggingSettings.get(newChannel.guild.id);
+        if (!loggingSettings || !loggingSettings.ChannelUpdate) return;
+
         const key = `${newChannel.guild.id}:${newChannel.id}`;
         const existing = channelUpdateCooldowns.get(key);
 

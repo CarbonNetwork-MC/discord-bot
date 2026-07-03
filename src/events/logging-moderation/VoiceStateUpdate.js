@@ -8,6 +8,11 @@ module.exports = {
     execute: (oldState, newState) => {
         const logChannel = getModLogChannel(newState.guild);
         if (!logChannel) return;
+
+        // Check if the event is loaded in the logging settings for this guild
+        const client = newState.client;
+        const loggingSettings = client.loggingSettings.get(newState.guild.id);
+        if (!loggingSettings || !loggingSettings.VoiceStateUpdate) return;
         
         // This fires when a user joins a voice channel
         if (!oldState.channelId && newState.channelId) {

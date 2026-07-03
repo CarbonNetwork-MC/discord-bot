@@ -8,6 +8,11 @@ module.exports = {
     name: Events.GuildMemberRemove,
     once: false,
     execute: async (member) => {
+        // Check if the event is loaded in the logging settings for this guild
+        const client = member.client;
+        const loggingSettings = client.loggingSettings.get(member.guild.id);
+        if (!loggingSettings || !loggingSettings.GuildMemberRemove) return;
+        
         const modLogChannel = getModLogChannel(member.guild);
         const joinLogChannel = getJoinLogChannel(member.guild);
         const leaveMessage = getLeaveMessage(member.guild.id);
