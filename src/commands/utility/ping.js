@@ -5,9 +5,11 @@ module.exports = {
     servers: null,
     allowedUsers: null,
     requiredPermissions: null,
+
 	data: new SlashCommandBuilder()
 		.setName('ping')
 		.setDescription('Replies with Pong!'),
+		
 	async execute(interaction) {
 		const embed = new EmbedBuilder()
 			.setColor('Random')
