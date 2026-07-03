@@ -50,7 +50,6 @@
 | **31** | 3 | GuildSoundboardSoundUpdate |  |  |
 
 ## Commands
-- Replace `prune` with `purge` (see images below)
 - Nick/unnick
 - timeout/remove
 - Massrole
@@ -60,9 +59,6 @@
 - voicemute
 - voicedeafen
 - voicemove
-
-![Purge Preview](/docs/images/purge_1.png)
-![Purge Preview](/docs/images/purge_2.png)
 
 ## Other
 
