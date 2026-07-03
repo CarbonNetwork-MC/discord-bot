@@ -4,7 +4,7 @@
 /.vscode
 
 # Ignore config files
-.env
+*.env
 src/config/status.json
 
 # Ignore log files and temporary files

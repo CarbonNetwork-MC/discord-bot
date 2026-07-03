@@ -4,6 +4,7 @@ const { consoleLog, writeLogToFile } = require('../services/logger.js');
 module.exports = {
     name: Events.InteractionCreate,
     once: false,
+
     execute: async (interaction) => {
         if (!interaction.isChatInputCommand()) return;
 
