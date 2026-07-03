@@ -9,8 +9,6 @@ class LoggingSettingsCache {
     async initialize() {
         const settings = await this.repository.getAll();
 
-        // console.log(settings);
-
         if (!settings || settings.length === 0) {
             consoleLog('error', 'No logging settings found in the database.');
             writeLogToFile('error', 'No logging settings found in the database.');
