@@ -3,7 +3,6 @@ const { consoleLog, writeLogToFile } = require('../../services/logger.js');
 
 const {
     WATCHDOG_ENABLED,
-    WATCHDOG_SERVERS = '',
     WATCHDOG_OUTPUT_TYPE,
     WATCHDOG_OUTPUT_ID,
     COLOR_GREEN,
@@ -73,12 +72,15 @@ module.exports = {
     async execute(oldState, newState) {
         if (WATCHDOG_ENABLED !== 'true') return;
 
-        const monitoredServers = WATCHDOG_SERVERS
-            .split(',')
-            .map(id => id.trim())
-            .filter(Boolean);
+        const client = newState.client;
+        const settings = client.watchDogSettings;
 
+        // Check if the guild is in the monitored servers list
+        const monitoredServers = settings.getEnabledGuilds();
         if (!monitoredServers.includes(newState.guild.id)) return;
+
+        // Check if the guild has voice state update logging enabled
+        if (!settings.isEnabled(newState.guild.id, 'VoiceStateUpdate')) return;
 
         const user = newState.member?.user ?? oldState.member?.user;
         if (!user) return;
