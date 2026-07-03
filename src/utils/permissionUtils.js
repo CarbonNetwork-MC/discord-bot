@@ -1,4 +1,4 @@
-const { PermissionsBitField } = require('discord.js');
+const { PermissionsBitField, EmbedBuilder } = require('discord.js');
 
 const { consoleLog, writeLogToFile } = require('../services/logger.js');
 const { getModLogChannel, getSystemLogChannel } = require('./channelUtils.js');
