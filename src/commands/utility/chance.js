@@ -74,13 +74,10 @@ module.exports = {
 
             const [_, x, y] = oddsMatch;
             const percentage = (parseFloat(x) / parseFloat(y)) * 100;
-            const formattedPercentage = percentage < 0.01
-                ? percentage.toFixed(4)
-                : percentage.toFixed(2);
 
             const embed = new EmbedBuilder()
                 .setTitle('Chance Calculation')
-                .setDescription(`The odds of this event happening are **${x} in ${y}**.\nThis means it has a **${formattedPercentage}%** chance of occurring.`)
+                .setDescription(`The odds of this event happening are **${x} in ${y}**.\nThis means it has a **${percentage.toFixed(8)}%** chance of occurring.`)
                 .setColor(process.env.COLOR_BLUE)
                 .setFooter({ text: process.env.EMBED_FOOTER })
                 .setTimestamp();
