@@ -60,7 +60,6 @@
 - voicemute
 - voicedeafen
 - voicemove
-- replace
 
 ![Purge Preview](/docs/images/purge_1.png)
 ![Purge Preview](/docs/images/purge_2.png)
