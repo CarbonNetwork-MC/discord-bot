@@ -37,6 +37,15 @@ async function clearGlobalCommands() {
 }
 
 async function clearGuildCommands(guildId) {
+    // Check if the bot is in the guild before attempting to clear commands
+    const guildsBotIsIn = await rest.get(Routes.userGuilds());
+    const isInGuild = guildsBotIsIn.some(guild => guild.id === guildId);
+
+    if (!isInGuild) {
+        console.log(`Bot is not in guild ${guildId}, skipping...`);
+        return;
+    }
+
     console.log(`Clearing guild commands for ${guildId}...`);
 
     const currentCommands = await rest.get(

@@ -8,6 +8,7 @@ const deployCommands = async (commands, clearCommands = false) => {
     const isProduction = process.env.ENVIRONMENT === 'production';
 
     try {
+        const guildsBotIsIn = await rest.get(Routes.userGuilds());
         const { globalCommands, commandsByGuild } = getCommandTargets(commands);
 
         if (isProduction) {
@@ -29,6 +30,12 @@ const deployCommands = async (commands, clearCommands = false) => {
         }
 
         for (const [guildId, guildCommands] of commandsByGuild) {
+            // Skip guilds that the bot is not in
+            if (!guildsBotIsIn.some(guild => guild.id === guildId)) {
+                consoleLog('warning', `Skipping guild ${guildId} as the bot is not in it.`);
+                continue;
+            }
+
             const body = clearCommands ? [] : guildCommands;
 
             consoleLog(

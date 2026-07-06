@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "deploy": "node src/bootstrap/deploy-commands.js",
     "clear-commands": "node src/scripts/clear-commands.js",
     "clear-commands:global": "node src/scripts/clear-commands.js --global",
     "clear-commands:dev": "node src/scripts/clear-commands.js --dev",
