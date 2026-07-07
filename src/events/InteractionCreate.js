@@ -36,7 +36,7 @@ module.exports = {
         }
 
         // Check if the user has the required permissions to execute the command
-        if (command.requiredPermissions !== null) {
+        if (interaction.guild && command.requiredPermissions !== null) {
             if (!Array.isArray(command.requiredPermissions)) {
                 consoleLog(
                     'warning',
