@@ -1,4 +1,10 @@
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder, 
+    MessageFlags,
+    InteractionContextType,
+    ApplicationIntegrationType
+} = require('discord.js');
 
 module.exports = {
 	isDev: false,
@@ -9,6 +15,13 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('chance')
 		.setDescription('Calculates the chance of something happening based on a percentage input.')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		])
         .addSubcommand(subcommand =>
             subcommand
                 .setName('from-percentage')

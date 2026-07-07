@@ -1,4 +1,10 @@
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder, 
+    MessageFlags,
+    ApplicationIntegrationType,
+    InteractionContextType
+} = require('discord.js');
 
 module.exports = {
     isDev: false,
@@ -7,9 +13,17 @@ module.exports = {
     ],
     allowedUsers: null,
     requiredPermissions: null,
+
     data: new SlashCommandBuilder()
         .setName('fw')
         .setDescription('Calculate the order of wards for the boss battle in Forewarned')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		])
         .addStringOption(option =>
             option
                 .setName('mode')

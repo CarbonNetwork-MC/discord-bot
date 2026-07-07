@@ -1,4 +1,10 @@
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder, 
+    MessageFlags,
+    ApplicationIntegrationType,
+    InteractionContextType
+} = require('discord.js');
 
 module.exports = {
 	isDev: false,
@@ -9,6 +15,12 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('purge')
 		.setDescription('Deletes messages from a channel.')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+		])
         .addSubcommand(subcommand =>
             subcommand
                 .setName('number')

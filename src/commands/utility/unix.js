@@ -1,4 +1,10 @@
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require("discord.js");
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder, 
+    MessageFlags,
+    InteractionContextType,
+    ApplicationIntegrationType
+} = require("discord.js");
 
 module.exports = {
     isDev: false,
@@ -9,6 +15,13 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("unix")
         .setDescription("Converts a unix timestamp to a human-readable date and time and vice versa.")
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		])
         .addSubcommand(subcommand =>
             subcommand
                 .setName("to-unix")

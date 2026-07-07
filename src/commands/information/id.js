@@ -1,19 +1,34 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder,
+    ApplicationIntegrationType,
+    InteractionContextType
+} = require('discord.js');
 
 module.exports = {
     isDev: false,
     servers: null,
     allowedUsers: null,
     requiredPermissions: null,
+
     data: new SlashCommandBuilder()
         .setName('id')
         .setDescription('Get the ID of the user or channel you are currently interacting with.')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		])
         .addUserOption(option =>
             option.setName('user')
-                .setDescription('The user to get the ID of'))
+                .setDescription('The user to get the ID of')
+        )
         .addChannelOption(option =>
             option.setName('channel')
-                .setDescription('The channel to get the ID of')),
+                .setDescription('The channel to get the ID of')
+        ),
                 
     async execute(interaction) {
         const user = interaction.options.getUser('user');

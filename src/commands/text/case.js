@@ -1,13 +1,26 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder,
+    InteractionContextType,
+    ApplicationIntegrationType
+} = require("discord.js");
 
 module.exports = {
     isDev: false,
     servers: null,
     allowedUsers: null,
     requiredPermissions: null,
+
     data: new SlashCommandBuilder()
         .setName("case")
         .setDescription("Converts text to a specified case.")
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		])
         .addStringOption((option) =>
             option
                 .setName("case")
@@ -31,6 +44,7 @@ module.exports = {
                 .setDescription("The text to convert.")
                 .setRequired(true)
         ),
+
     async execute(interaction) {
         const caseType = interaction.options.getString("case");
         const inputText = interaction.options.getString("input");

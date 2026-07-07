@@ -1,13 +1,27 @@
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require("discord.js");
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder, 
+    MessageFlags,
+    InteractionContextType,
+    ApplicationIntegrationType
+} = require("discord.js");
 
 module.exports = {
     isDev: false,
     servers: null,
     allowedUsers: null,
     requiredPermissions: null,
+
     data: new SlashCommandBuilder()
         .setName("base64")
         .setDescription("Encodes or decodes text to/from Base64")
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		])
         .addStringOption((option) =>
             option
                 .setName("input")
@@ -24,6 +38,7 @@ module.exports = {
                     { name: "Decode", value: "decode" }
                 )
         ),
+
     async execute(interaction) {
         const input = interaction.options.getString("input");
         const mode = interaction.options.getString("mode");

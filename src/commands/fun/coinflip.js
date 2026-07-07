@@ -1,4 +1,13 @@
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder, 
+    MessageFlags, 
+    ActionRowBuilder, 
+    ButtonBuilder, 
+    ButtonStyle,
+    InteractionContextType,
+    ApplicationIntegrationType
+} = require('discord.js');
 
 const coinSides = ['Heads', 'Tails'];
 
@@ -7,9 +16,18 @@ module.exports = {
     servers: null,
     allowedUsers: null,
     requiredPermissions: null,
+
     data: new SlashCommandBuilder()
         .setName('coinflip')
-        .setDescription('Flips a coin!'),
+        .setDescription('Flips a coin!')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		]),
+
     async execute(interaction) {
         const result = await handleCoinFlip();
 

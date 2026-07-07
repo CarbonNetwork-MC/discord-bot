@@ -1,4 +1,10 @@
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder, 
+    MessageFlags,
+    ApplicationIntegrationType,
+    InteractionContextType
+} = require('discord.js');
 
 const { consoleLog, writeLogToFile } = require('../../services/logger.js');
 const { getModLogChannel } = require('../../utils/channelUtils.js');
@@ -10,9 +16,16 @@ module.exports = {
     requiredPermissions: [
         'KickMembers'
     ],
+
     data: new SlashCommandBuilder()
         .setName('kick')
         .setDescription('Kicks a user from the server')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+		])
         .addUserOption(option => 
             option.setName('target')
                 .setDescription('The user to kick')
@@ -23,6 +36,7 @@ module.exports = {
                 .setDescription('The reason for the kick')
                 .setRequired(false)
         ),
+
     async execute(interaction) {
         // Fetch the user and reason from the command options
         const user = interaction.options.getUser('target');

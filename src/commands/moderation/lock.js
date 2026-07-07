@@ -1,4 +1,10 @@
-const { SlashCommandBuilder, EmbedBuilder, ChannelType } = require('discord.js');
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder, 
+    ChannelType,
+    ApplicationIntegrationType,
+    InteractionContextType
+} = require('discord.js');
 
 const { consoleLog, writeLogToFile } = require('../../services/logger.js');
 const { getModLogChannel } = require('../../utils/channelUtils.js');
@@ -10,9 +16,16 @@ module.exports = {
     requiredPermissions: [
         'ManageChannels',
     ],
+
     data: new SlashCommandBuilder()
         .setName('lock')
         .setDescription('Locks a channel')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+		])
         .addChannelOption(option =>
             option.setName('channel')
                 .setDescription('The channel to lock')
@@ -24,6 +37,7 @@ module.exports = {
                 .setDescription('The reason for locking the channel')
                 .setRequired(false)
         ),
+
     async execute(interaction) {
         const channel = interaction.options.getChannel('channel') || interaction.channel;
         const reason = interaction.options.getString('reason') || 'No reason provided';

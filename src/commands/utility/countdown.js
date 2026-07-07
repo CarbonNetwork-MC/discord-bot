@@ -1,4 +1,10 @@
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require("discord.js");
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder, 
+    MessageFlags,
+    InteractionContextType,
+    ApplicationIntegrationType
+} = require("discord.js");
 
 const { formatTimeDifference } = require("../../utils/timeFormatter.js");
 
@@ -11,6 +17,13 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("countdown")
         .setDescription("See a countdown to a specific date.")
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		])
         .addStringOption(option =>
             option.setName("date")
                 .setDescription("The date to count down to (DD-MM-YYYY HH:mm).")

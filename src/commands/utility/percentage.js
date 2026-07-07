@@ -1,4 +1,10 @@
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
+const { 
+	SlashCommandBuilder, 
+	EmbedBuilder, 
+	MessageFlags,
+	InteractionContextType,
+	ApplicationIntegrationType
+} = require('discord.js');
 
 module.exports = {
 	isDev: false,
@@ -9,6 +15,13 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('percentage')
 		.setDescription('Calculates the percentage of a number.')
+		.setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		])
 		.addNumberOption(option =>
 			option.setName('number')
 				.setDescription('The number to calculate the percentage for.')

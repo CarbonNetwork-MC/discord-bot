@@ -1,4 +1,10 @@
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder, 
+    MessageFlags,
+    ApplicationIntegrationType,
+    InteractionContextType
+} = require('discord.js');
 
 const { consoleLog, writeLogToFile } = require('../../services/logger.js');
 const { parseDurationToSeconds } = require('../../utils/timeFormatter.js');
@@ -10,9 +16,16 @@ module.exports = {
     requiredPermissions: [
         'BanMembers'
     ],
+
     data: new SlashCommandBuilder()
         .setName('ban')
         .setDescription('Bans a user from the server')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+		])
         .addUserOption(option =>
             option.setName('target')
                 .setDescription('The user to ban')
@@ -28,6 +41,7 @@ module.exports = {
                 .setDescription('The duration of the ban (e.g., 1d, 2h, 30m)')
                 .setRequired(false)
         ),
+
     async execute(interaction) {
         // Fetch the user and reason from the command options
         const user = interaction.options.getUser('target');

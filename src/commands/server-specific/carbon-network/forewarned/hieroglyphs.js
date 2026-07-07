@@ -43,15 +43,24 @@ module.exports = {
     ],
     allowedUsers: null,
     requiredPermissions: null,
+
     data: new SlashCommandBuilder()
         .setName('hieroglyphs')
         .setDescription('Translate a message into Forewarned hieroglyphs')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		])
         .addStringOption(option =>
             option
                 .setName('message')
                 .setDescription('Message to translate')
                 .setRequired(true)
         ),
+
     async execute(interaction) {
         const input = interaction.options.getString('message');
 

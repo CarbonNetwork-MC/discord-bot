@@ -1,4 +1,13 @@
-const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, MessageFlags } = require('discord.js');
+const { 
+    SlashCommandBuilder, 
+    ActionRowBuilder, 
+    ButtonBuilder, 
+    ButtonStyle, 
+    EmbedBuilder, 
+    MessageFlags,
+    ApplicationIntegrationType,
+    InteractionContextType
+} = require('discord.js');
 
 const { getWarns } = require('../../utils/punishmentApplier');
 
@@ -9,14 +18,23 @@ module.exports = {
     requiredPermissions: [
         'ModerateMembers',
     ],
+
     data: new SlashCommandBuilder()
         .setName('warns')
         .setDescription('View all warns for a user')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		])
         .addUserOption(option =>
             option.setName('user')
                 .setDescription('The user to view warns for')
                 .setRequired(true)
         ),
+        
     async execute(interaction) {
         const user = interaction.options.getUser('user');
 

@@ -1,4 +1,10 @@
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require("discord.js");
+const { 
+	SlashCommandBuilder, 
+	EmbedBuilder, 
+	MessageFlags,
+	InteractionContextType,
+	ApplicationIntegrationType
+} = require("discord.js");
 
 const { convertUnit, convertTemperature } = require("../../utils/conversionUtils.js");
 
@@ -11,6 +17,13 @@ module.exports = {
   	data: new SlashCommandBuilder()
 		.setName("convert")
 		.setDescription("Convert between common units.")
+		.setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		])
 		.addNumberOption(option =>
 			option
 				.setName("amount")

@@ -1,4 +1,8 @@
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder, 
+    MessageFlags 
+} = require('discord.js');
 
 const { consoleLog, writeLogToFile } = require('../../services/logger');
 const { getTimeoutDuration1, getTimeoutDuration2 } = require('../../services/guild-settings');
@@ -13,9 +17,16 @@ module.exports = {
         'KickMembers',
         'ModerateMembers',
     ],
+
     data: new SlashCommandBuilder()
         .setName('warn')
-        .setDescription('Warn a user')  
+        .setDescription('Warn a user')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+		])
         .addUserOption(option =>
             option.setName('user')
                 .setDescription('The user to warn')

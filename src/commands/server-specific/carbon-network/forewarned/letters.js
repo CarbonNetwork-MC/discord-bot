@@ -1,5 +1,11 @@
-const { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } = require('discord.js');
 const path = require('path');
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder, 
+    AttachmentBuilder,
+    InteractionContextType,
+    ApplicationIntegrationType
+} = require('discord.js');
 
 module.exports = {
     isDev: false,
@@ -8,9 +14,17 @@ module.exports = {
     ],
     allowedUsers: null,
     requiredPermissions: null,
+
     data: new SlashCommandBuilder()
         .setName('letters')
-        .setDescription('Get the letter combinations for Forewarned'),
+        .setDescription('Get the letter combinations for Forewarned')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		]),
 
     async execute(interaction) {
         const imagePath = path.join(__dirname, '../../src/storage/images/letters.png');

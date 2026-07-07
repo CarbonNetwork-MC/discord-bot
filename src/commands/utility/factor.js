@@ -1,4 +1,10 @@
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
+const { 
+	SlashCommandBuilder, 
+	EmbedBuilder, 
+	MessageFlags,
+	InteractionContextType,
+	ApplicationIntegrationType
+} = require('discord.js');
 
 module.exports = {
 	isDev: false,
@@ -9,6 +15,13 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('factor')
 		.setDescription('Calculates the factors of a given number.')
+		.setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		])
 		.addIntegerOption(option =>
 			option.setName('number')
 				.setDescription('The number to calculate factors for.')

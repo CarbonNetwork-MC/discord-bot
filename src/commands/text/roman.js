@@ -1,4 +1,9 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder,
+    InteractionContextType,
+    ApplicationIntegrationType
+} = require('discord.js');
 
 module.exports = {
 	isDev: false,
@@ -9,6 +14,13 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('roman')
 		.setDescription('Converts a number to Roman numerals and vice versa.')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		])
         .addSubcommand(subcommand => 
             subcommand
             .setName('to-roman')

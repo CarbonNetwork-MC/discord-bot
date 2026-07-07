@@ -1,4 +1,9 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder,
+    InteractionContextType,
+    ApplicationIntegrationType
+} = require('discord.js');
 
 const maxLength = 30;
 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -9,9 +14,17 @@ module.exports = {
     servers: null,
     allowedUsers: null,
     requiredPermissions: null,
+
     data: new SlashCommandBuilder()
         .setName('random')
         .setDescription('Generates random data based on the specified type.')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		])
         .addSubcommand(subcommand => 
             subcommand.setName('number')
                 .setDescription('Generates a random number between the specified min and max values.')
@@ -40,6 +53,7 @@ module.exports = {
                         .setRequired(false)
                 )
         ),
+
     async execute(interaction) {
         const subcommand = interaction.options.getSubcommand();
 

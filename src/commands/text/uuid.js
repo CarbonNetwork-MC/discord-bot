@@ -1,4 +1,12 @@
-const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder, 
+    ActionRowBuilder, 
+    ButtonBuilder, 
+    ButtonStyle,
+    InteractionContextType,
+    ApplicationIntegrationType
+} = require('discord.js');
 
 module.exports = {
     isDev: false,
@@ -9,6 +17,13 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('uuid')
         .setDescription('Generates a random UUID')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		])
         .addBooleanOption(option =>
             option.setName('remove-dashes')
                 .setDescription('Remove dashes from the UUID')

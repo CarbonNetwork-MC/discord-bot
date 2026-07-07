@@ -1,4 +1,10 @@
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder, 
+    MessageFlags,
+    InteractionContextType,
+    ApplicationIntegrationType
+} = require('discord.js');
 
 module.exports = {
 	isDev: false,
@@ -9,6 +15,13 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('age')
 		.setDescription('Calculates the age based on the provided date of birth.')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		])
 		.addStringOption(option =>
 			option.setName('dob')
 				.setDescription('Your date of birth (DD-MM-YYYY).')

@@ -1,4 +1,11 @@
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags, PermissionsBitField } = require('discord.js');
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder, 
+    MessageFlags, 
+    PermissionsBitField,
+    ApplicationIntegrationType,
+    InteractionContextType
+} = require('discord.js');
 
 const { getDbPool } = require('../../services/database');
 const { getGuildSettings, reloadSettingsForGuild } = require('../../services/guild-settings');
@@ -10,15 +17,20 @@ module.exports = {
     requiredPermissions: [
         'ManageGuild',
     ],
+
     data: new SlashCommandBuilder()
         .setName('settings')
         .setDescription('View or change server settings')
-
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+		])
         .addSubcommand(sub =>
             sub.setName('view')
                 .setDescription('View the current server settings')
         )
-
         .addSubcommand(sub =>
             sub.setName('set-toggle')
                 .setDescription('Enable or disable welcome/leave messages')
@@ -37,7 +49,6 @@ module.exports = {
                     .setRequired(true)
                 )
         )
-
         .addSubcommand(sub =>
             sub.setName('set-channel')
                 .setDescription('Set a log channel')
@@ -57,7 +68,6 @@ module.exports = {
                     .setRequired(true)
                 )
         )
-
         .addSubcommand(sub =>
             sub.setName('set-role')
                 .setDescription('Set the mute role')
@@ -67,7 +77,6 @@ module.exports = {
                     .setRequired(true)
                 )
         )
-
         .addSubcommand(sub =>
             sub.setName('set-message')
                 .setDescription('Set a welcome or leave message')
@@ -86,6 +95,7 @@ module.exports = {
                     .setRequired(true)
                 )
         ),
+
     async execute(interaction) {
         const guildId = interaction.guild.id;
         const settings = getGuildSettings(guildId);

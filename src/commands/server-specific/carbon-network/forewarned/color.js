@@ -1,4 +1,9 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { 
+    SlashCommandBuilder,
+    EmbedBuilder,
+    ApplicationIntegrationType,
+    InteractionContextType
+} = require('discord.js');
 
 module.exports = {
     isDev: false,
@@ -7,9 +12,17 @@ module.exports = {
     ],
     allowedUsers: null,
     requiredPermissions: null,
+
     data: new SlashCommandBuilder()
         .setName('color')
-        .setDescription('Generates three random numbers between 0 and 255 to create a random color.'),
+        .setDescription('Generates three random numbers between 0 and 255 to create a random color.')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		]),
 
     async execute(interaction) {
         const r = Math.floor(Math.random() * 256);
