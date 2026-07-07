@@ -10,7 +10,9 @@ module.exports = {
 	isDev: false,
     servers: null,
     allowedUsers: null,
-    requiredPermissions: null,
+    requiredPermissions: [
+        'ManageMessages'
+    ],
 
 	data: new SlashCommandBuilder()
 		.setName('purge')
