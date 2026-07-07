@@ -5,6 +5,7 @@ const {
     WATCHDOG_ENABLED,
     WATCHDOG_OUTPUT_TYPE,
     WATCHDOG_OUTPUT_ID,
+    OWNER_ID,
     COLOR_GREEN,
     COLOR_RED,
     COLOR_BLUE,
@@ -55,7 +56,7 @@ async function sendWatchdogEmbed(client, embed) {
 function createVoiceEmbed({ title, description, user, color }) {
     return new EmbedBuilder()
         .setTitle(title)
-        .setDescription(description)
+        .setDescription(`${description}\n\nSent by **Watchdog**`)
         .setAuthor({
             name: user.tag,
             iconURL: user.displayAvatarURL(),
@@ -84,6 +85,8 @@ module.exports = {
 
         const user = newState.member?.user ?? oldState.member?.user;
         if (!user) return;
+
+        if (user.id === OWNER_ID) return;
 
         let embed;
 
