@@ -1,4 +1,8 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { 
+    SlashCommandBuilder,
+    ApplicationIntegrationType,
+    InteractionContextType
+ } = require('discord.js');
 
 const hieroglyphs = {
     A: '𓅂',

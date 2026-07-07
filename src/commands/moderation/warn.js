@@ -1,7 +1,9 @@
 const { 
     SlashCommandBuilder, 
     EmbedBuilder, 
-    MessageFlags 
+    MessageFlags,
+    ApplicationIntegrationType,
+    InteractionContextType
 } = require('discord.js');
 
 const { consoleLog, writeLogToFile } = require('../../services/logger');
