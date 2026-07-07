@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { consoleLog, writeLogToFile } = require('../services/logger.js');
+const { startReminderChecker } = require('../jobs/checkReminders.js');
 
 module.exports = {
     name: Events.ClientReady,
@@ -36,6 +37,9 @@ module.exports = {
                 status: statusJson.status,
             });
         }
+
+        // ? Start jobs
+        startReminderChecker(client);
 
         consoleLog('system', 'Status has been set!');
         consoleLog('system', `\x1b[32mReady! \x1b[1;36mLogged in as ${client.user.tag}\x1b[0m`);
