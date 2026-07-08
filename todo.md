@@ -49,8 +49,7 @@
 | **30** | 3 | GuildSoundboardSoundDelete |  |  |
 | **31** | 3 | GuildSoundboardSoundUpdate |  |  |
 
-## Commands
-- Nick/unnick
+## Commands     
 - timeout/remove
 - Massrole
 - Role add/remove <user> <role>
