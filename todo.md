@@ -56,6 +56,7 @@
 - voicemute
 - voicedeafen
 - voicemove
+- Update purge from a command handler to a subcommand handler
 
 ## Other
 

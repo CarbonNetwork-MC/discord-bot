@@ -3,6 +3,8 @@ const path = require('node:path');
 
 const { consoleLog, writeLogToFile } = require('../services/logger.js');
 
+const foldersToSkip = ['subcommands', 'src'];
+
 function getCommandFiles(dir) {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
 
@@ -10,6 +12,11 @@ function getCommandFiles(dir) {
         const fullPath = path.join(dir, entry.name);
 
         if (entry.isDirectory()) {
+            // Skip certain folders (e.g., "subcommands" and "src") when searching for command files
+            if (foldersToSkip.includes(entry.name)) {
+                return [];
+            }
+
             return getCommandFiles(fullPath);
         }
 
