@@ -55,7 +55,6 @@
 - Massrole
 - Role add/remove <user> <role>
 - Poll
-- Remindme / reminder
 - voicemute
 - voicedeafen
 - voicemove
