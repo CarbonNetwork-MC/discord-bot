@@ -71,7 +71,7 @@ module.exports = {
                 const confirmEmbed = new EmbedBuilder()
                     .setTitle('Action Confirmed')
                     .setDescription(`The action to remove ${role} from all members has been confirmed. The process will begin shortly.`)
-                    .setColor(process.env.COLOR_GREEN)
+                    .setColor(process.env.COLOR_ORANGE)
                     .setFooter({ text: process.env.EMBED_FOOTER })
                     .setTimestamp();
 
@@ -82,69 +82,87 @@ module.exports = {
 
                 collector.stop('confirmed');
 
-                roleQueue.add(async () => {
-                    const members = await interaction.guild.members.fetch();
+                try {
+                    await roleQueue.add(async () => {
+                        const members = await interaction.guild.members.fetch();
 
-                    let success = 0;
-                    let failed = 0;
-                    let skipped = 0;
+                        let success = 0;
+                        let failed = 0;
+                        let skipped = 0;
 
-                    for (const member of members.values()) {
-                        try {
-                            if (member.user.bot) {
-                                skipped++;
-                                continue;
+                        for (const member of members.values()) {
+                            try {
+                                if (member.user.bot) {
+                                    skipped++;
+                                    continue;
+                                }
+
+                                if (!member.roles.cache.has(role.id)) {
+                                    skipped++;
+                                    continue;
+                                }
+
+                                await member.roles.remove(role);
+                                success++;
+                            } catch (err) {
+                                failed++;
+                                consoleLog('error', `Failed to remove role from member ${member.user.tag}: ${err}`);
+                                writeLogToFile(`Failed to remove role from member ${member.user.tag}: ${err}`);
                             }
-
-                            if (!member.roles.cache.has(role.id)) {
-                                skipped++;
-                                continue;
-                            }
-
-                            await member.roles.remove(role);
-                            success++;
-                        } catch (err) {
-                            failed++;
-                            consoleLog('error', `Failed to remove role from member ${member.user.tag}: ${err}`);
-                            writeLogToFile(`Failed to remove role from member ${member.user.tag}: ${err}`);
                         }
-                    }
 
-                    const resultEmbed = new EmbedBuilder()
-                        .setTitle('Role Removal Complete')
-                        .setDescription(`The action to remove ${role} from all members has been completed.`)
-                        .addFields(
-                            { name: 'Successful Removals', value: `${success}`, inline: true },
-                            { name: 'Failed Removals', value: `${failed}`, inline: true },
-                            { name: 'Skipped Members', value: `${skipped}`, inline: true },
-                        )
-                        .setColor(process.env.COLOR_GREEN)
-                        .setFooter({ text: process.env.EMBED_FOOTER })
-                        .setTimestamp();
-
-                    await interaction.editReply({
-                        embeds: [resultEmbed],
-                    });
-                });
-
-                collector.on('end', async (collected, reason) => {
-                    if (reason === 'confirmed' || reason === 'cancelled') return;
-
-                    if (collected.size === 0) {
-                        const timeoutEmbed = new EmbedBuilder()
-                            .setTitle('Action Timed Out')
-                            .setDescription('The action to remove the role from all members has timed out.')
-                            .setColor(process.env.COLOR_RED)
+                        const resultEmbed = new EmbedBuilder()
+                            .setTitle('Role Removal Complete')
+                            .setDescription(`The action to remove ${role} from all members has been completed.`)
+                            .addFields(
+                                { name: 'Total Members Processed', value: `${members.size}`, inline: true },
+                                { name: 'Successfully Added', value: `${success}`, inline: true },
+                                { name: '\u200b', value: '\u200b', inline: true },
+                                { name: 'Failed', value: `${failed}`, inline: true },
+                                { name: 'Skipped (Did Not Have Role)', value: `${skipped}`, inline: true },
+                            )
+                            .setColor(process.env.COLOR_GREEN)
                             .setFooter({ text: process.env.EMBED_FOOTER })
                             .setTimestamp();
 
                         await interaction.editReply({
-                            embeds: [timeoutEmbed],
-                            components: [],
+                            embeds: [resultEmbed],
                         });
-                    }
-                });
+                    });
+                } catch (err) {
+                    consoleLog('error', `Failed to remove role from all members: ${err.stack || err}`);
+                    writeLogToFile(`Failed to remove role from all members: ${err.stack || err}`);
+
+                    const errorEmbed = new EmbedBuilder()
+                        .setTitle('Error')
+                        .setDescription(`An error occurred while trying to remove ${role} from all members.`)
+                        .setColor(process.env.COLOR_RED)
+                        .setFooter({ text: process.env.EMBED_FOOTER })
+                        .setTimestamp();
+
+                    await interaction.editReply({
+                        embeds: [errorEmbed],
+                    });
+                }
             }
         })
+
+        collector.on('end', async (collected, reason) => {
+            if (reason === 'confirmed' || reason === 'cancelled') return;
+
+            if (collected.size === 0) {
+                const timeoutEmbed = new EmbedBuilder()
+                    .setTitle('Action Timed Out')
+                    .setDescription('The action to remove the role from all members has timed out.')
+                    .setColor(process.env.COLOR_RED)
+                    .setFooter({ text: process.env.EMBED_FOOTER })
+                    .setTimestamp();
+
+                await interaction.editReply({
+                    embeds: [timeoutEmbed],
+                    components: [],
+                });
+            }
+        });
     }
 }

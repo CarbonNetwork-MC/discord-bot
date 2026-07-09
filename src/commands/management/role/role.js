@@ -13,6 +13,7 @@ const deleteRole = require('./subcommands/delete.js');
 const color = require('./subcommands/color.js');
 
 const add = require('./subcommands/add.js');
+const addAll = require('./subcommands/addall.js');
 const all = require('./subcommands/all.js');
 const bots = require('./subcommands/bots.js');
 const humans = require('./subcommands/humans.js');
@@ -35,6 +36,7 @@ const subcommands = new Map([
     ['color', color],
 
     ['add', add],
+    ['addall', addAll],
     ['all', all],
     ['bots', bots],
     ['humans', humans],
@@ -75,6 +77,7 @@ module.exports = {
         .addSubcommand(color.data)
 
         .addSubcommand(add.data)
+        .addSubcommand(addAll.data)
         .addSubcommand(all.data)
         .addSubcommand(bots.data)
         .addSubcommand(humans.data)

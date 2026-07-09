@@ -11,9 +11,16 @@ class Queue {
         if (typeof job !== 'function') {
             throw new TypeError('Queue job must be a function');
         }
+        
+        return new Promise((resolve, reject) => {
+            this.queue.push({
+                job,
+                resolve,
+                reject
+            });
 
-        this.queue.push(job);
-        this.run();
+            this.run();
+        });
     }
 
     async run() {
@@ -22,12 +29,14 @@ class Queue {
         this.running = true;
 
         while (this.queue.length > 0) {
-            const job = this.queue.shift();
+            const item = this.queue.shift();
 
             try {
-                await job();
+                const result = await item.job();
+                item.resolve(result);
             } catch (error) {
                 consoleLog('error', `Queue job failed: ${error.stack || error}`);
+                item.reject(error);
             }
 
             if (this.delay > 0) {

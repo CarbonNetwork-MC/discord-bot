@@ -72,7 +72,7 @@ module.exports = {
                 const confirmEmbed = new EmbedBuilder()
                     .setTitle('Action Confirmed')
                     .setDescription(`The action to add ${role} to all members has been confirmed. The process will begin shortly.`)
-                    .setColor(process.env.COLOR_GREEN)
+                    .setColor(process.env.COLOR_ORANGE)
                     .setFooter({ text: process.env.EMBED_FOOTER })
                     .setTimestamp();
 
@@ -83,50 +83,68 @@ module.exports = {
 
                 collector.stop('confirmed');
 
-                roleQueue.add(async () => {
-                    const members = await interaction.guild.members.fetch();
+                try {
+                    await roleQueue.add(async () => {
+                        const members = await interaction.guild.members.fetch();
 
-                    let success = 0;
-                    let failed = 0;
-                    let skipped = 0;
+                        let success = 0;
+                        let failed = 0;
+                        let skipped = 0;
 
-                    for (const member of members.values()) {
-                        try {
-                            if (member.user.bot) {
-                                skipped++;
-                                continue;
+                        for (const member of members.values()) {
+                            try {
+                                if (member.user.bot) {
+                                    skipped++;
+                                    continue;
+                                }
+
+                                if (member.roles.cache.has(role.id)) {
+                                    skipped++;
+                                    continue;
+                                }
+
+                                await member.roles.add(role);
+                                success++;
+                            } catch (err) {
+                                failed++;
+                                consoleLog('error', `Failed to add role to member ${member.user.tag}: ${err}`);
+                                writeLogToFile(`Failed to add role to member ${member.user.tag}: ${err}`);
                             }
-
-                            if (member.roles.cache.has(role.id)) {
-                                skipped++;
-                                continue;
-                            }
-
-                            await member.roles.add(role);
-                            success++;
-                        } catch (err) {
-                            failed++;
-                            consoleLog('error', `Failed to add role to member ${member.user.tag}: ${err}`);
-                            writeLogToFile(`Failed to add role to member ${member.user.tag}: ${err}`);
                         }
-                    }
 
-                    const resultEmbed = new EmbedBuilder()
-                        .setTitle('Role Assignment Complete')
-                        .setDescription(`The action to add ${role} to all members has been completed.`)
-                        .addFields(
-                            { name: 'Successful Assignments', value: `${success}`, inline: true },
-                            { name: 'Failed Assignments', value: `${failed}`, inline: true },
-                            { name: 'Skipped Members', value: `${skipped}`, inline: true },
-                        )
-                        .setColor(process.env.COLOR_GREEN)
+                        const resultEmbed = new EmbedBuilder()
+                            .setTitle('Role Assignment Complete')
+                            .setDescription(`The action to add ${role} to all members has been completed.`)
+                            .addFields(
+                                { name: 'Total Members Processed', value: `${members.size}`, inline: true },
+                                { name: 'Successfully Added', value: `${success}`, inline: true },
+                                { name: '\u200b', value: '\u200b', inline: true },
+                                { name: 'Failed to Add', value: `${failed}`, inline: true },
+                                { name: 'Skipped (Already Had Role)', value: `${skipped}`, inline: true },
+                            )
+                            .setColor(process.env.COLOR_GREEN)
+                            .setFooter({ text: process.env.EMBED_FOOTER })
+                            .setTimestamp();
+
+                        await interaction.editReply({
+                            embeds: [resultEmbed],
+                        });
+                    })
+                } catch (err) {
+                    consoleLog('error', `Failed to add role ${role.name} to all members: ${err}`);
+                    writeLogToFile(`Failed to add role ${role.name} to all members: ${err}`);
+
+                    const errorEmbed = new EmbedBuilder()
+                        .setTitle('Error')
+                        .setDescription(`An error occurred while trying to add ${role} to all members.`)
+                        .setColor(process.env.COLOR_RED)
                         .setFooter({ text: process.env.EMBED_FOOTER })
                         .setTimestamp();
 
                     await interaction.editReply({
-                        embeds: [resultEmbed],
-                    })
-                })
+                        embeds: [errorEmbed],
+                    });
+                }
             }
         });
 
