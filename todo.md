@@ -51,7 +51,6 @@
 
 ## Commands
 - Massrole
-- Role add/remove <user> <role>
 - Poll
 - voicemute
 - voicedeafen
