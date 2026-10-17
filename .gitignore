@@ -1,7 +1,11 @@
+# Ignore node_modules, npm, and VSCode directories
 /node_modules
 /.npm
 /.vscode
-.env
+
+# Ignore config files
+*.env
+src/config/status.json
 
 # Ignore log files and temporary files
 src/logs/*

@@ -1,6 +1,12 @@
 const fs = require('fs/promises');
 const path = require('path');
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
+const { 
+	SlashCommandBuilder, 
+	EmbedBuilder, 
+	MessageFlags,
+	InteractionContextType,
+	ApplicationIntegrationType
+} = require('discord.js');
 
 module.exports = {
 	isDev: false,
@@ -12,6 +18,13 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('readfile')
 		.setDescription('Reads a text file and sends it as an embed.')
+		.setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		])
 		.addStringOption(option =>
 			option.setName('path')
 				.setDescription('Relative path to the text file')

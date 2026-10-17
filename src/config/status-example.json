@@ -1,0 +1,17 @@
+{
+    "status": "online",
+    "messages": [
+        {
+            "name": "Listening to music",
+            "type": "Listening"
+        },
+        {
+            "name": "Watching a movie",
+            "type": "Watching"
+        },
+        {
+            "name": "Playing Visual Studio Code",
+            "type": "Playing"
+        }
+    ]
+}

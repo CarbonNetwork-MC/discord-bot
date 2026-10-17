@@ -1,4 +1,9 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder,
+    InteractionContextType,
+    ApplicationIntegrationType
+} = require('discord.js');
 const math = require('mathjs');
 
 module.exports = {
@@ -6,13 +11,23 @@ module.exports = {
     servers: null,
     allowedUsers: null,
     requiredPermissions: null,
+
     data: new SlashCommandBuilder()
         .setName('math')
         .setDescription('Calculate things.')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		])
         .addStringOption(option =>
             option.setName('expression')
                 .setDescription('The mathematical expression to calculate.')
-                .setRequired(true)),
+                .setRequired(true)
+        ),
+
     async execute(interaction) {
         const expression = interaction.options.getString('expression');
         try {

@@ -13,6 +13,11 @@ module.exports = {
         const modLogChannel = getModLogChannel(messages.first().guild);
         if (!modLogChannel) return;
 
+        // Check if the event is loaded in the logging settings for this guild
+        const client = messages.first().client;
+        const loggingSettings = client.loggingSettings.get(messages.first().guild.id);
+        if (!loggingSettings || !loggingSettings.MessageBulkDelete) return;
+
         // Channel, Number of Messages Deleted
         const embed = new EmbedBuilder()
             .setTitle(':wastebasket: Bulk Messages Deleted')

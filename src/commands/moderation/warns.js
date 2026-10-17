@@ -1,22 +1,40 @@
-const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, MessageFlags } = require('discord.js');
+const { 
+    SlashCommandBuilder, 
+    ActionRowBuilder, 
+    ButtonBuilder, 
+    ButtonStyle, 
+    EmbedBuilder, 
+    MessageFlags,
+    ApplicationIntegrationType,
+    InteractionContextType
+} = require('discord.js');
 
 const { getWarns } = require('../../utils/punishmentApplier');
 
 module.exports = {
-    isDev: true,
+    isDev: false,
     servers: null,
     allowedUsers: null,
     requiredPermissions: [
         'ModerateMembers',
     ],
+
     data: new SlashCommandBuilder()
         .setName('warns')
         .setDescription('View all warns for a user')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		])
         .addUserOption(option =>
             option.setName('user')
                 .setDescription('The user to view warns for')
                 .setRequired(true)
         ),
+        
     async execute(interaction) {
         const user = interaction.options.getUser('user');
 
@@ -51,7 +69,13 @@ module.exports = {
             );
 
             // Send the embed with buttons
-            const message = await interaction.reply({ embeds: [embed], components: [row], fetchReply: true });
+            const response = await interaction.reply({ 
+                embeds: [embed], 
+                components: [row], 
+                withResponse: true 
+            });
+            const message = await interaction.fetchReply();
+
             const collector = message.createMessageComponentCollector({ time: 60000 });
 
             // Handle button interactions

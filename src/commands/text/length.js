@@ -1,17 +1,32 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder,
+    InteractionContextType,
+    ApplicationIntegrationType
+} = require('discord.js');
 
 module.exports = {
     isDev: false,
     servers: null,
     allowedUsers: null,
     requiredPermissions: null,
+
     data: new SlashCommandBuilder()
         .setName('length')
         .setDescription('Get the length of a text string')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		])
         .addStringOption(option =>
             option.setName('input')
                 .setDescription('The text to measure')
-                .setRequired(true)),
+                .setRequired(true)
+        ),
+
     async execute(interaction) {
         const input = interaction.options.getString('input');
         const embed = new EmbedBuilder()

@@ -1,4 +1,13 @@
-const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, MessageFlags } = require('discord.js');
+const { 
+    SlashCommandBuilder, 
+    ActionRowBuilder, 
+    ButtonBuilder, 
+    ButtonStyle, 
+    EmbedBuilder, 
+    MessageFlags,
+    ApplicationIntegrationType,
+    InteractionContextType
+} = require('discord.js');
 
 const db = require('../../services/database.js');
 
@@ -7,9 +16,17 @@ module.exports = {
     servers: null,
     allowedUsers: null,
     requiredPermissions: null,
+
     data: new SlashCommandBuilder()
         .setName('notes')
         .setDescription('Manage your personal notes')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		])
         .addSubcommand(subcommand =>
             subcommand
                 .setName('list')
@@ -77,6 +94,7 @@ module.exports = {
                         .setRequired(true)
                 )
         ),
+
     async execute(interaction) {
         const subcommand = interaction.options.getSubcommand();
         const pool = db.getDbPool();

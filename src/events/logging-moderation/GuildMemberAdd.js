@@ -2,12 +2,17 @@ const { Events, EmbedBuilder } = require('discord.js');
 
 const { consoleLog, writeLogToFile } = require('../../services/logger.js');
 const { getModLogChannel, getJoinLogChannel } = require('../../utils/channelUtils.js');
-const { getWelcomeMessage, isWelcomeEnabled } = require('../../config/guild-settings.js');
+const { getWelcomeMessage, isWelcomeEnabled } = require('../../services/guild-settings.js');
 
 module.exports = {
     name: Events.GuildMemberAdd,
     once: false,
     execute: async (member) => {
+        // Check if the event is loaded in the logging settings for this guild
+        const client = member.client;
+        const loggingSettings = client.loggingSettings.get(member.guild.id);
+        if (!loggingSettings || !loggingSettings.GuildMemberAdd) return;
+
         const modLogChannel = getModLogChannel(member.guild);
         const joinLogChannel = getJoinLogChannel(member.guild);
         const welcomeMessage = getWelcomeMessage(member.guild.id);

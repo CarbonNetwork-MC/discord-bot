@@ -4,7 +4,7 @@ const { consoleLog, writeLogToFile } = require('../../services/logger.js');
 const { getModLogChannel } = require('../../utils/channelUtils.js');
 const { compareChannelOverwrites, checkIfBotHasPermission } = require('../../utils/permissionUtils.js');
 
-const ChannelTypes = require('../../config/enums/ChannelTypeLabels.js');
+const ChannelTypes = require('../../enums/ChannelTypeLabels.js');
 
 module.exports = {
     name: Events.ChannelCreate,
@@ -12,6 +12,11 @@ module.exports = {
     execute: async (channel) => {
         const logChannel = getModLogChannel(channel.guild);
         if (!logChannel) return;
+
+        // Check if the event is loaded in the logging settings for this guild
+        const client = channel.client;
+        const loggingSettings = client.loggingSettings.get(channel.guild.id);
+        if (!loggingSettings || !loggingSettings.ChannelCreate) return;
 
         // Format channel type
         const typeName = ChannelTypes[channel.type] || 'Unknown';

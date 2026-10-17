@@ -13,6 +13,11 @@ module.exports = {
         const modLogChannel = getModLogChannel(message.guild);
         if (!modLogChannel) return;
 
+        // Check if the event is loaded in the logging settings for this guild
+        const client = message.client;
+        const loggingSettings = client.loggingSettings.get(message.guild.id);
+        if (!loggingSettings || !loggingSettings.MessageDelete) return;
+
         // Ignore messages which contain embeds and are send by a bot, as these are likely system messages or automated messages
         if (message.embeds.length > 0 && message.author.bot) return;
 

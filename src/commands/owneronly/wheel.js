@@ -1,4 +1,9 @@
-const { SlashCommandBuilder, MessageFlags } = require('discord.js');
+const { 
+    SlashCommandBuilder, 
+    MessageFlags,
+    ApplicationIntegrationType,
+    InteractionContextType
+} = require('discord.js');
 
 const { getDbPool } = require('../../services/database.js');
 
@@ -9,9 +14,18 @@ module.exports = {
         process.env.OWNER_ID,
     ],
     requiredPermissions: null,
+
     data: new SlashCommandBuilder()
         .setName('wheel')
-        .setDescription('Spins the wheel and returns a random result'),
+        .setDescription('Spins the wheel and returns a random result')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		]),
+
     async execute(interaction) {
         // Check if the command was used by a specific user
         if (interaction.user.id !== process.env.OWNER_ID) {

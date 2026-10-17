@@ -1,13 +1,14 @@
 const { REST, Routes } = require('discord.js');
 
 const { consoleLog, writeLogToFile } = require('../services/logger.js');
-const { getCommandTargets } = require('../config/get-command-targets.js');
+const { getCommandTargets } = require('../utils/get-command-targets.js');
 
 const deployCommands = async (commands, clearCommands = false) => {
     const rest = new REST().setToken(process.env.TOKEN);
     const isProduction = process.env.ENVIRONMENT === 'production';
 
     try {
+        const guildsBotIsIn = await rest.get(Routes.userGuilds());
         const { globalCommands, commandsByGuild } = getCommandTargets(commands);
 
         if (isProduction) {
@@ -29,6 +30,12 @@ const deployCommands = async (commands, clearCommands = false) => {
         }
 
         for (const [guildId, guildCommands] of commandsByGuild) {
+            // Skip guilds that the bot is not in
+            if (!guildsBotIsIn.some(guild => guild.id === guildId)) {
+                consoleLog('warning', `Skipping guild ${guildId} as the bot is not in it.`);
+                continue;
+            }
+
             const body = clearCommands ? [] : guildCommands;
 
             consoleLog(

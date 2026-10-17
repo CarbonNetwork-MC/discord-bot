@@ -1,16 +1,31 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder,
+    ApplicationIntegrationType,
+    InteractionContextType
+} = require('discord.js');
 
 module.exports = {
     isDev: false,
     servers: null,
     allowedUsers: null,
     requiredPermissions: null,
+
     data: new SlashCommandBuilder()
         .setName('userinfo')
         .setDescription('Displays information about a user.')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		])
         .addUserOption(option =>
             option.setName('user')
-                .setDescription('The user to get information about')),
+                .setDescription('The user to get information about')
+        ),
+        
     async execute(interaction) {
         const user = interaction.options.getUser('user') || interaction.user;
         const member = await interaction.guild.members.fetch(user.id);

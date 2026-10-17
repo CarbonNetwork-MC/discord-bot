@@ -21,6 +21,11 @@ function loadEvents(client) {
     const eventsPath = path.join(__dirname, '../events');
     const eventFiles = getFiles(eventsPath);
 
+    if (client.loggingSettings.cache.size === 0) {
+        consoleLog('warning', 'Logging settings cache is empty. Events may not function correctly.');
+        writeLogToFile('warning', 'Logging settings cache is empty. Events may not function correctly.');
+    }
+
     let loadedEventCount = 0;
 
     for (const filePath of eventFiles) {

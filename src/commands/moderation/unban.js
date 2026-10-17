@@ -1,4 +1,10 @@
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder, 
+    MessageFlags,
+    ApplicationIntegrationType,
+    InteractionContextType
+} = require('discord.js');
 
 const { consoleLog, writeLogToFile } = require('../../services/logger.js');
 
@@ -9,14 +15,22 @@ module.exports = {
     requiredPermissions: [
         'BanMembers',
     ],
+
     data: new SlashCommandBuilder()
         .setName('unban')
         .setDescription('Unbans a user from the server')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+		])
         .addStringOption(option => 
             option.setName('target')
                 .setDescription('The ID of the user to unban')
                 .setRequired(true)
         ),
+
     async execute(interaction) {
         // Fetch the user ID from the command options
         const userId = interaction.options.getString('target');

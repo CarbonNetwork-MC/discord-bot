@@ -10,6 +10,9 @@
 - Commands (See [Commands](#commands))
 - Sticky Roles
 - Chat filter?
+- Ticket system
+- Leveling system?
+- Servers Stats (toggleable)
 
 ## Events
 | **#** | **Priority** | **Event** | **Joinlog** | **Done** |
@@ -47,17 +50,15 @@
 | **31** | 3 | GuildSoundboardSoundUpdate |  |  |
 
 ## Commands
-- Replace `prune` with `purge` (see images below)
-- Kick
-- Warn
-- Nick/unnick
-- Mute/unmute
-
-![Purge Preview](/docs/images/purge_1.png)
-![Purge Preview](/docs/images/purge_2.png)
+- Massrole
+- Poll
+- voicemute
+- voicedeafen
+- voicemove
+- Update purge from a command handler to a subcommand handler
 
 ## Other
-- Add a 'isDev' parameter to all commands, when the bot is in development these commands will only deploy to the development server and not globally. Also only developers will be able to execute these commands.
+
 
 ## How commands should be deployed
 | Command | Development | Production |

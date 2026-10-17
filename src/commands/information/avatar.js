@@ -1,17 +1,32 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { 
+    SlashCommandBuilder, 
+    EmbedBuilder,
+    ApplicationIntegrationType,
+    InteractionContextType
+} = require('discord.js');
 
 module.exports = {
     isDev: false,
     servers: null,
     allowedUsers: null,
     requiredPermissions: null,
+
     data: new SlashCommandBuilder()
         .setName('avatar')
         .setDescription('Gives the avatar of mentioned user or yourself.')
+        .setIntegrationTypes([
+			ApplicationIntegrationType.GuildInstall,
+		])
+		.setContexts([
+			InteractionContextType.Guild,
+			InteractionContextType.BotDM,
+		])
         .addUserOption(option =>
             option.setName('user')
                 .setDescription('The user whose avatar you want to see')
-                .setRequired(false)),
+                .setRequired(false)
+        ),
+
     async execute(interaction) {
         const user = interaction.options.getUser('user') || interaction.user;
         const author = interaction.user;
